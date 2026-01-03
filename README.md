@@ -1,56 +1,110 @@
-<div align="center">
+# MeakAuras
 
-# WeakAuras
+![WoW Version](https://img.shields.io/badge/WoW-12.0%2B%20Midnight-blue)
+![Interface](https://img.shields.io/badge/Interface-120001-green)
+[![GitHub](https://img.shields.io/badge/GitHub-Falkicon%2FMeakAuras-181717?logo=github)](https://github.com/Falkicon/MeakAuras)
+[![Sponsor](https://img.shields.io/badge/Sponsor-pink?logo=githubsponsors)](https://github.com/sponsors/Falkicon)
 
-[![Build Status](https://github.com/WeakAuras/WeakAuras2/workflows/CI/badge.svg)](https://github.com/WeakAuras/WeakAuras2/actions?workflow=CI)
-[![WeakAuras on Discord](https://img.shields.io/badge/discord-weakauras-738bd7.svg?style=flat)](https://discord.gg/weakauras) [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/weakauras)
+A Midnight-compatible fork of [WeakAuras](https://github.com/WeakAuras/WeakAuras2) for World of Warcraft 12.0+.
 
-![Logo](https://i.imgur.com/wwbxeCG.jpeg)
-</div>
+> **Why "Meak"?** It's meek in combat - it knows when to stay quiet around secret values!
+>
+> *Name lineage: Power Auras → Weak Auras → Meak Auras*
 
-WeakAuras is a powerful and flexible framework that allows the display of highly customizable graphics on World of Warcraft's user interface to indicate buffs, debuffs, and other relevant information. This addon was created to be a lightweight replacement for Power Auras but has since introduced more functionalities while remaining efficient and easy to use.
+> **Midnight Compatibility**: MeakAuras handles WoW 12.0's "secret values" - opaque userdata returned by combat APIs in instanced content. Where original WeakAuras errors, MeakAuras gracefully degrades.
+
+## About
+
+MeakAuras is a powerful and flexible framework for displaying highly customizable graphics on World of Warcraft's user interface. Show buffs, debuffs, cooldowns, and other relevant information with precision timing and beautiful visuals.
+
+WeakAuras will not support Retail after Midnight (they continue supporting Classic). MeakAuras is the Midnight-compatible fork for Retail players.
 
 ## Features
 
-* An intuitive and powerful configuration interface
-* Custom textures including all textures from Power Auras and Blizzard's spell alerts
-* Progress bars and textures that show the exact duration of auras
-* Displays based on auras, health, power (mana, rage, soul shards, holy power, etc.), cooldowns, combat events, runes, totems, items, and many other triggers
-* Preset and user-defined animations
-* Custom side-effects such as chat announcements or sounds
-* Grouping, which allows multiple displays to be positioned and configured at the same time
-* CPU optimizations such as conditional loading/unloading of displays, modularity, and prevention of full aura scanning
-* Powerful customization options, such as animation paths, on-show/on-hide code, and custom triggers, for Lua-savvy users
+- **Intuitive Configuration** – Powerful visual editor for creating and customizing displays
+- **Rich Trigger System** – Auras, health, power, cooldowns, combat events, items, and more
+- **Custom Textures** – Includes Power Auras textures and Blizzard spell alerts
+- **Progress Tracking** – Bars and textures showing exact durations
+- **Animations** – Preset and custom animation paths
+- **Side Effects** – Chat announcements, sounds, and custom actions
+- **Grouping** – Position and configure multiple displays together
+- **Performance** – Conditional loading, modularity, efficient aura scanning
+- **Lua Scripting** – Custom triggers and on-show/on-hide code for power users
+
+## Midnight Secret Value Handling
+
+MeakAuras includes defensive wrappers for APIs affected by 12.0 combat restrictions:
+
+| Component | Protection |
+|-----------|------------|
+| `UnitAura` | Safe wrapper with type checking before `AuraUtil.UnpackAuraData` |
+| `C_UnitAuras` | pcall wrappers for `GetAuraDataByIndex`, `GetAuraDataByAuraInstanceID` |
+| `AuraUtil.ForEachAura` | Replaced with `SafeForEachAura` that skips secret values |
+| Aura comparisons | Graceful handling when values cannot be compared |
+
+See [STATUS.md](STATUS.md) for detailed migration progress.
 
 ## Quick Start
 
-To open the options window, type `/wa` or `/weakauras` into your chat and hit enter or use the minimap icon.
+Open the options window using any of these commands:
+
+| Command | Description |
+|---------|-------------|
+| `/ma` | Open MeakAuras options |
+| `/meakauras` | Open MeakAuras options |
+| `/wa` | Open MeakAuras options (muscle memory) |
+| `/weakauras` | Open MeakAuras options (muscle memory) |
+
+Or click the minimap icon.
+
+## Installation
+
+1. Download or clone this repository
+2. Place the addon folders in your WoW addons directory:
+   ```
+   World of Warcraft\_retail_\Interface\AddOns\
+   ```
+3. Restart WoW or type `/reload` if already running
+
+**Required folders:**
+- `WeakAuras/` (core addon)
+- `WeakAurasOptions/` (configuration UI)
+- `WeakAurasTemplates/` (trigger templates)
+- `WeakAurasModelPaths/` (3D model support)
+- `WeakAurasArchive/` (import/export)
 
 ## Extensions
 
-* [WeakAuras Companion](https://weakauras.wtf): This application adds the missing link between Wago.io and the World of Warcraft addon, enabling you to update your auras in a convenient fashion.
-* [WeakAuras_StopMotion](https://www.curseforge.com/wow/addons/weakauras-stop-motion): This addon adds a new region type to WeakAuras that allows for stop motion animations. Stop Motion textures contain each frame of the animation as a separate image. The addon ships with a number of animations and it supports custom textures.
-* [SharedMedia](https://www.curseforge.com/wow/addons/sharedmedia) for more bar textures.
-* [SharedMediaAdditionalFonts](https://www.curseforge.com/wow/addons/shared-media-additional-fonts) for more fonts.
-* [ColorPickerPlus](https://www.curseforge.com/wow/addons/colorpickerplus) for a better version of the WoW color picker that includes class color templates and a copy and paste function.
+- **[WeakAuras Companion](https://weakauras.wtf)** – Desktop app for syncing auras from Wago.io
+- **[SharedMedia](https://www.curseforge.com/wow/addons/sharedmedia)** – Additional bar textures
+- **[SharedMediaAdditionalFonts](https://www.curseforge.com/wow/addons/shared-media-additional-fonts)** – More fonts
+
+## Finding Auras
+
+Browse community-created auras at [wago.io](https://wago.io/) - from simple buff trackers to complete UI packages.
 
 ## Documentation
 
-For in-depth documentation, see the [wiki](https://github.com/WeakAuras/WeakAuras2/wiki) page.
+See the original [WeakAuras Wiki](https://github.com/WeakAuras/WeakAuras2/wiki) for general usage documentation. MeakAuras-specific changes are documented in [STATUS.md](STATUS.md).
 
-## Examples
+## Known Issues
 
-For some examples of what WeakAuras can do, take a look at [wago.io](https://wago.io/) where tons of people upload their creations and even feature complete interfaces utilizing WeakAuras!
+- **Thunder Clap spellCount error** – GenericTrigger.lua comparisons error on secret values (logged but functional)
+- **GenericTrigger.lua** – Left original to avoid icon regression; needs careful rework
 
-## Problems
+## Contributing
 
-* Please see the [wiki](https://github.com/WeakAuras/WeakAuras2/wiki) page.
-* If you've discovered something that's clearly wrong, or if you get an error, please create a [ticket](https://github.com/WeakAuras/WeakAuras2/issues).
-* You're a programmer yourself and want to contribute? Check out our [contributing guidelines](CONTRIBUTING.md) to get started!
-* Feel free to join our [Discord Community](https://discord.gg/weakauras) to talk, get help and discuss everything WeakAuras!
+Found a bug or have a fix? [Open an issue](https://github.com/Falkicon/MeakAuras/issues) or submit a pull request.
 
 ## Support
 
-If you want to help out with development without providing code yourself, you can always donate to the WeakAuras project maintainers using PayPal or become a Patreon:
+If you find MeakAuras useful, consider [sponsoring on GitHub](https://github.com/sponsors/Falkicon) to support continued Midnight compatibility work.
 
-[![WeakAuras on PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/WeakAuras)  [![Become a Patreon!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=3216523)
+## License
+
+MeakAuras is a fork of WeakAuras, licensed under the GNU General Public License v2.0.
+
+## Credits
+
+- **[WeakAuras Team](https://github.com/WeakAuras)** – Original addon and years of development
+- **Falkicon** – Midnight compatibility fork and maintenance
