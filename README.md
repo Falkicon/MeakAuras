@@ -1,11 +1,14 @@
 # MeakAuras
 
+![Status](https://img.shields.io/badge/Status-Early%20Alpha-orange)
 ![WoW Version](https://img.shields.io/badge/WoW-12.0%2B%20Midnight-blue)
 ![Interface](https://img.shields.io/badge/Interface-120001-green)
 [![GitHub](https://img.shields.io/badge/GitHub-Falkicon%2FMeakAuras-181717?logo=github)](https://github.com/Falkicon/MeakAuras)
 [![Sponsor](https://img.shields.io/badge/Sponsor-pink?logo=githubsponsors)](https://github.com/sponsors/Falkicon)
 
 A Midnight-compatible fork of [WeakAuras](https://github.com/WeakAuras/WeakAuras2) for World of Warcraft 12.0+.
+
+> **Early Alpha**: This fork is in active development. Expect bugs during combat in instanced content (M+, Raids, PvP) as we work through Midnight's secret value restrictions. See [Known Issues](#known-issues) and [STATUS.md](STATUS.md).
 
 > **Why "Meak"?** It's meek in combat - it knows when to stay quiet around secret values!
 >
