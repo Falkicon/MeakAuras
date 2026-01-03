@@ -25,7 +25,7 @@ local function CorrectSpellName(input)
     return inputId
   elseif WeakAuras.IsClassicEra() and input then
     local _, _, _, _, _, _, spellId = OptionsPrivate.Private.ExecEnv.GetSpellInfo(input)
-    if spellId then
+    if spellId then -- @scan-ignore: midnight-safe
       return spellId
     end
   elseif(input) then
@@ -705,7 +705,7 @@ function OptionsPrivate.ConstructOptions(prototype, data, startorder, triggernum
                 local useExactSpellId = (arg.showExactOption and getValue(trigger, nil, "use_exact_"..realname, multiEntry, entryNumber))
                                         or arg.only_exact
                 if value and value ~= "" then
-                  if useExactSpellId then
+                  if useExactSpellId then -- @scan-ignore: midnight-safe
                     local itemId = tonumber(value)
                     if itemId and itemId ~= 0 then
                       local itemName = C_Item.GetItemInfo(value)
@@ -729,7 +729,7 @@ function OptionsPrivate.ConstructOptions(prototype, data, startorder, triggernum
                                         or arg.only_exact
                 if value and value ~= "" and (type(value) == "number" or type(value) == "string") then
                   local spellID = WeakAuras.SafeToNumber(value)
-                  if spellID then
+                  if spellID then -- @scan-ignore: midnight-safe
                     if arg.negativeIsEJ and WeakAuras.IsRetail() and spellID < 0 then
                       local tbl = C_EncounterJournal.GetSectionInfo(-spellID)
                       if tbl and tbl.title then
@@ -1210,3 +1210,4 @@ function OptionsPrivate.GetLoadOptions(data)
     end
     return load
 end
+

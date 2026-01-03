@@ -53,33 +53,87 @@ local FixDebuffClass
 if WeakAuras.IsRetail() then
   local LibDispell = LibStub("LibDispel-1.0")
   FixDebuffClass = function(debuffClass, spellId)
-    if debuffClass == nil then
+    -- MIDNIGHT: debuffClass/spellId may be secret values, use pcall for comparisons and table lookups
+    local okNil, isNil = pcall(function() return debuffClass == nil end)
+    local okEmpty, isEmpty = pcall(function() return debuffClass == "" end)
+    if okNil and isNil then
       local bleedList = LibDispell:GetBleedList()
-      if bleedList[spellId] then
+      -- MIDNIGHT: spellId may be secret, can't use as table key
+      local okLookup, isBleed = pcall(function() return bleedList[spellId] end)
+      if okLookup and isBleed then
         debuffClass = "bleed"
       else
         debuffClass = "none"
       end
-    elseif debuffClass == "" then
+    elseif okEmpty and isEmpty then
       debuffClass = "enrage"
+    elseif not okNil or not okEmpty then
+      -- Secret value - can't determine type, default to "none"
+      debuffClass = "none"
     else
-      debuffClass = string.lower(debuffClass)
+      local okLower, result = pcall(string.lower, debuffClass)
+      debuffClass = okLower and result or "none"
     end
     return debuffClass
   end
 else
   FixDebuffClass = function(debuffClass)
-    if debuffClass == nil then
+    -- MIDNIGHT: debuffClass may be a secret value, use pcall for comparisons
+    local okNil, isNil = pcall(function() return debuffClass == nil end)
+    local okEmpty, isEmpty = pcall(function() return debuffClass == "" end)
+    if okNil and isNil then
       debuffClass = "none"
-    elseif debuffClass == "" then
+    elseif okEmpty and isEmpty then
       debuffClass = "enrage"
+    elseif not okNil or not okEmpty then
+      -- Secret value - can't determine type, default to "none"
+      debuffClass = "none"
     else
-      debuffClass = string.lower(debuffClass)
+      local okLower, result = pcall(string.lower, debuffClass)
+      debuffClass = okLower and result or "none"
     end
     return debuffClass
   end
 end
 
+-- MIDNIGHT: Safe version of AuraUtil.ForEachAura that handles secret values
+-- AuraUtil.ForEachAura crashes when C_UnitAuras returns secret values during instanced combat
+local function SafeForEachAura(unit, filter, maxCount, func, usePackedAura)
+  if not C_UnitAuras or not C_UnitAuras.GetAuraDataByIndex then
+    -- Fallback to old API if C_UnitAuras not available
+    return
+  end
+  local index = 1
+  local continuationToken
+  while true do
+    local slots
+    -- Get aura slots - may fail with secret values
+    local ok, result, token = pcall(C_UnitAuras.GetAuraSlots, unit, filter, maxCount, continuationToken)
+    if not ok then
+      return  -- Can't enumerate auras, likely all secret
+    end
+    slots = result
+    continuationToken = token
+    if not slots then
+      break
+    end
+    for _, slot in ipairs(slots) do
+      -- Get aura data - may return secret value
+      local auraOk, auraData = pcall(C_UnitAuras.GetAuraDataBySlot, unit, slot)
+      if auraOk and auraData and type(auraData) == "table" then
+        -- Only call the callback if we got valid aura data
+        local stopOk, stop = pcall(func, auraData)
+        if stopOk and stop then
+          return
+        end
+      end
+      -- Skip secret values silently
+    end
+    if not continuationToken then
+      break
+    end
+  end
+end
 
 -- Lua APIs
 local tinsert, wipe = table.insert, wipe
@@ -501,12 +555,19 @@ local function UpdateMatchData(time, matchDataChanged, unit, index, auraInstance
     changed = true
   end
 
-  if data.icon ~= icon then
-    data.icon = icon
-    changed = true
+  -- MIDNIGHT: Only update icon if new icon is valid (not nil)
+  -- This preserves existing icon when lookup fails due to secret values
+  if icon ~= nil then
+    local okIcon, iconChanged = pcall(function() return data.icon ~= icon end)
+    if okIcon and iconChanged then
+      data.icon = icon
+      changed = true
+    end
   end
 
-  if data.stacks ~= stacks then
+  -- MIDNIGHT: Safe comparisons (stacks/duration/expirationTime/modRate may be secret values)
+  local okStacks, stacksChanged = pcall(function() return data.stacks ~= stacks end)
+  if okStacks and stacksChanged then
     data.stacks = stacks
     changed = true
   end
@@ -521,17 +582,20 @@ local function UpdateMatchData(time, matchDataChanged, unit, index, auraInstance
     changed = true
   end
 
-  if data.duration ~= duration then
+  local okDuration, durationChanged = pcall(function() return data.duration ~= duration end)
+  if okDuration and durationChanged then
     data.duration = duration
     changed = true
   end
 
-  if data.expirationTime ~= expirationTime then
+  local okExpTime, expTimeChanged = pcall(function() return data.expirationTime ~= expirationTime end)
+  if okExpTime and expTimeChanged then
     data.expirationTime = expirationTime
     changed = true
   end
 
-  if data.modRate ~= modRate then
+  local okModRate, modRateChanged = pcall(function() return data.modRate ~= modRate end)
+  if okModRate and modRateChanged then
     data.modRate = modRate
     changed = true
   end
@@ -552,17 +616,21 @@ local function UpdateMatchData(time, matchDataChanged, unit, index, auraInstance
     changed = true
   end
 
-  if data.isStealable ~= isStealable then
+  -- MIDNIGHT: Safe comparisons (boolean aura fields may be secret values)
+  local okStealable, stealableChanged = pcall(function() return data.isStealable ~= isStealable end)
+  if okStealable and stealableChanged then
     data.isStealable = isStealable
     changed = true
   end
 
-  if data.isBossDebuff ~= isBossDebuff then
+  local okBossDebuff, bossDebuffChanged = pcall(function() return data.isBossDebuff ~= isBossDebuff end)
+  if okBossDebuff and bossDebuffChanged then
     data.isBossDebuff = isBossDebuff
     changed = true
   end
 
-  if data.isCastByPlayer ~= isCastByPlayer then
+  local okCastByPlayer, castByPlayerChanged = pcall(function() return data.isCastByPlayer ~= isCastByPlayer end)
+  if okCastByPlayer and castByPlayerChanged then
     data.isCastByPlayer = isCastByPlayer
     changed = true
   end
@@ -640,9 +708,11 @@ local function FindBestMatchData(time, id, triggernum, triggerInfo, matchedUnits
     for index, auraData in pairs(unitData) do
       local remCheck = true
       if triggerInfo.remainingFunc and auraData.expirationTime then
-        if auraData.duration == 0 then
+        -- MIDNIGHT: Safe comparison (duration may be secret value)
+        local okDur, durZero = pcall(function() return auraData.duration == 0 end)
+        if okDur and durZero then
           remCheck = false
-        else
+        elseif okDur then
           local modRate = auraData.modRate or 1
           local remaining = (auraData.expirationTime - time) / modRate
           remCheck = triggerInfo.remainingFunc(remaining)
@@ -1784,7 +1854,7 @@ do
         _time = GetTime()
         _unit = unit
         _filter = filter
-        AuraUtil.ForEachAura(unit, filter, nil, HandleAura, true)
+        SafeForEachAura(unit, filter, nil, HandleAura, true)
       else
         local time = GetTime()
         local index = 1
@@ -1929,17 +1999,31 @@ do
           -- incremental
           if unitAuraUpdateInfo.addedAuras ~= nil then
             for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-              if (aura.isHelpful and filter == "HELPFUL") or (aura.isHarmful and filter == "HARMFUL") then
-                HandleAura(aura)
+              -- MIDNIGHT: aura may be secret value, check type first
+              if type(aura) == "table" then
+                -- MIDNIGHT: Safe filter check (isHelpful/isHarmful may be secret)
+                local ok, matches = pcall(function()
+                  return (aura.isHelpful and filter == "HELPFUL") or (aura.isHarmful and filter == "HARMFUL")
+                end)
+                if ok and matches then
+                  HandleAura(aura)
+                end
               end
             end
           end
 
           if unitAuraUpdateInfo.updatedAuraInstanceIDs ~= nil then
             for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
-              local aura = C_UnitAuras.GetAuraDataByAuraInstanceID(unit, auraInstanceID)
-              if aura and ((aura.isHelpful and filter == "HELPFUL") or (aura.isHarmful and filter == "HARMFUL")) then
-                HandleAura(aura)
+              -- MIDNIGHT: Wrap in pcall - may return secret value
+              local auraOk, aura = pcall(C_UnitAuras.GetAuraDataByAuraInstanceID, unit, auraInstanceID)
+              if auraOk and aura and type(aura) == "table" then
+                -- MIDNIGHT: Safe filter check (isHelpful/isHarmful may be secret)
+                local ok, matches = pcall(function()
+                  return (aura.isHelpful and filter == "HELPFUL") or (aura.isHarmful and filter == "HARMFUL")
+                end)
+                if ok and matches then
+                  HandleAura(aura)
+                end
               end
             end
           end
@@ -1968,7 +2052,7 @@ do
           -- full
           -- clean first
           CleanUpOutdatedMatchData(nil, unit, filter)
-          AuraUtil.ForEachAura(unit, filter, nil, HandleAura, true)
+          SafeForEachAura(unit, filter, nil, HandleAura, true)
         end
       else
         local index = 1
@@ -3945,7 +4029,10 @@ end
 
 local function UpdateMatchDataMulti(time, base, key, event, sourceGUID, sourceName, destGUID, destName, spellId, spellName, amount)
   local updated = false
-  local icon = spellId and Private.ExecEnv.GetSpellIcon(spellId)
+  -- MIDNIGHT: spellId may be secret, wrap icon lookup in pcall
+  local icon
+  local okIcon, iconResult = pcall(function() return spellId and Private.ExecEnv.GetSpellIcon(spellId) end)
+  if okIcon then icon = iconResult end
   ScheduleMultiCleanUp(destGUID, time + 60)
   if not base[key] or not base[key][sourceGUID] then
     updated = true
@@ -3990,27 +4077,38 @@ local function UpdateMatchDataMulti(time, base, key, event, sourceGUID, sourceNa
       expirationTime = math.huge
     end
 
-    if match.duration ~= duration then
+    -- MIDNIGHT: Use pcall for comparisons (values may be secret)
+    -- Only update if comparison succeeds and values differ; keep existing value if secret
+    local okDur, durNeq = pcall(function() return match.duration ~= duration end)
+    if okDur and durNeq then
       match.duration = duration
       updated = true
     end
 
-    if match.expirationTime ~= expirationTime then
+    local okExp, expNeq = pcall(function() return match.expirationTime ~= expirationTime end)
+    if okExp and expNeq then
       match.expirationTime = expirationTime
       updated = true
     end
 
-    if match.icon ~= icon then
-      match.icon = icon
-      updated = true
+    -- MIDNIGHT: Only update icon if new icon is valid (not nil)
+    -- This preserves existing icon when lookup fails due to secret values
+    if icon ~= nil then
+      local okIcon, iconNeq = pcall(function() return match.icon ~= icon end)
+      if okIcon and iconNeq then
+        match.icon = icon
+        updated = true
+      end
     end
 
-    if match.count ~= amount then
+    local okCount, countNeq = pcall(function() return match.count ~= amount end)
+    if okCount and countNeq then
       match.count = amount
       updated = true
     end
 
-    if match.spellId ~= spellId then
+    local okSpell, spellNeq = pcall(function() return match.spellId ~= spellId end)
+    if okSpell and spellNeq then
       match.spellId = spellId
       updated = true
     end
@@ -4025,9 +4123,11 @@ local function UpdateMatchDataMulti(time, base, key, event, sourceGUID, sourceNa
 end
 
 local function AugmentMatchDataMultiWith(matchData, unit, name, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId, _, _, _, _, modRate)
-  if expirationTime == 0 then
+  -- MIDNIGHT: Safe comparison (expirationTime may be secret value)
+  local okExpZero, expZero = pcall(function() return expirationTime == 0 end)
+  if okExpZero and expZero then
     expirationTime = math.huge
-  else
+  elseif okExpZero then
     ScheduleMultiCleanUp(matchData.GUID, expirationTime / (modRate or 1))
   end
   local changed = false
@@ -4041,7 +4141,9 @@ local function AugmentMatchDataMultiWith(matchData, unit, name, icon, stacks, de
     changed = true
   end
 
-  if matchData.stacks ~= stacks then
+  -- MIDNIGHT: Safe comparisons (stacks/duration/expirationTime/modRate may be secret values)
+  local okStacks, stacksChanged = pcall(function() return matchData.stacks ~= stacks end)
+  if okStacks and stacksChanged then
     matchData.stacks = stacks
     changed = true
   end
@@ -4057,17 +4159,20 @@ local function AugmentMatchDataMultiWith(matchData, unit, name, icon, stacks, de
     changed = true
   end
 
-  if matchData.duration ~= duration then
+  local okDuration, durationChanged = pcall(function() return matchData.duration ~= duration end)
+  if okDuration and durationChanged then
     matchData.duration = duration
     changed = true
   end
 
-  if matchData.expirationTime ~= expirationTime then
+  local okExpTime, expTimeChanged = pcall(function() return matchData.expirationTime ~= expirationTime end)
+  if okExpTime and expTimeChanged then
     matchData.expirationTime = expirationTime
     changed = true
   end
 
-  if matchData.modRate ~= modRate then
+  local okModRate, modRateChanged = pcall(function() return matchData.modRate ~= modRate end)
+  if okModRate and modRateChanged then
     matchData.modRate = modRate
     changed = true
   end
@@ -4116,7 +4221,7 @@ do
   AugmentMatchDataMulti = function(matchData, unit, filter, sourceGUID, nameKey, spellKey)
     if newAPI then
       _matchData, _unit, _sourceGUID, _nameKey, _spellKey = matchData, unit, sourceGUID, nameKey, spellKey
-      AuraUtil.ForEachAura(unit, filter, nil, HandleAura, true)
+      SafeForEachAura(unit, filter, nil, HandleAura, true)
     else
       local index = 1
       while true do
@@ -4242,7 +4347,7 @@ do
     if newAPI then
       _base = base
       _unit = unit
-      AuraUtil.ForEachAura(unit, filter, nil, HandleAura, true)
+      SafeForEachAura(unit, filter, nil, HandleAura, true)
     else
       local index = 1
       while true do

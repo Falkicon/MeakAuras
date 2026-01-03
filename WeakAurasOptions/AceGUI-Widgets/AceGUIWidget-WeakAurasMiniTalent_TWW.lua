@@ -20,7 +20,7 @@ local buttonSize = 32
 local buttonSizePadded = 45
 
 local function Button_ShowToolTip(self)
-  if self.spellId then
+  if self.spellId then -- @scan-ignore: midnight-safe
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetSpellByID(self.spellId, false, false, true)
   end
@@ -462,3 +462,4 @@ local function Constructor()
 end
 
 AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
+

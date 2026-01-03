@@ -1,0 +1,53 @@
+============================================================
+PATTERN SCAN: WeakAurasOptions
+Scanned: 95 files
+Generated: 2025-12-22 13:15
+============================================================
+
+This scan finds OPERATIONS on secret value variables.
+Run scanner.py first to find the API calls themselves.
+
+[HIGH RISK] - Direct operations on tracked secret variables
+--------------------------------------------------
+  GenericTrigger.lua:408
+    Arithmetic on secret variable: duration
+    Code: OptionsPrivate.commonOptions.AddCodeOption(customOptions, data, L["Duration Info...
+
+
+[MEDIUM RISK] - Heuristic matches (review manually)
+--------------------------------------------------
+  Cache.lua:165
+    Possible secret variable operation (~=): spellId
+    Code: if not bestMatch or (spellId and spellId ~= 0 and IsSpellKnown(spellId)) then...
+
+  LoadOptions.lua:733
+    Possible secret variable operation (<): spellID
+    Code: if arg.negativeIsEJ and WeakAuras.IsRetail() and spellID < 0 then...
+
+  WeakAurasOptions.lua:1747
+    Possible secret variable operation (-): Stacks
+    Code: {type = "mini", name = "s", desc = L["Stacks - The number of stacks of an aura (...
+
+  OptionsFrames\FrameChooser.lua:77
+    Possible secret variable operation (==): focusName
+    Code: if(focusName == "WorldFrame" or not focusName) then...
+
+  OptionsFrames\FrameChooser.lua:92
+    Possible secret variable operation (~=): focus
+    Code: if(focus ~= oldFocus) then...
+
+  OptionsFrames\FrameChooser.lua:100
+    Possible secret variable operation (~=): focusName
+    Code: if(focusName ~= oldFocusName) then...
+
+
+============================================================
+SUMMARY
+============================================================
+  High Risk:   1
+  Medium Risk: 6
+
+FIX STRATEGIES:
+  - Passthrough: Pass values directly to StatusBar/Cooldown widgets
+  - Check first: Use issecretvalue() before operations
+  - Degrade: Show '...' when values are secret

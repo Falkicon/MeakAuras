@@ -20,10 +20,109 @@ local cache
 local metaData
 local bestIcon = {}
 
+-- =============================================================================
+-- MIDNIGHT (12.0) SAFE SPELL CACHE
+-- =============================================================================
+-- PROBLEM: In WoW 12.0+, certain spell IDs reference broken PlayerConditions
+-- in the client's DBC data. Querying these IDs via GetSpellInfo/GetSpellName
+-- causes a C++ client crash (not a Lua error - pcall cannot catch it).
+--
+-- Known crash-causing spells (as of 12.0 beta):
+--   - Spell 257321 -> PlayerCondition 53723
+--   - Spell 1261435 -> PlayerCondition 151037
+--
+-- SOLUTION: Use brute-force iteration with:
+--   1. "Holes" to skip large gaps of invalid spell IDs (performance)
+--   2. Blacklist of known crash-causing spell IDs (safety)
+--   If crashes persist, fall back to spellbook-only approach.
+--
+-- To find more crash IDs: If client crashes during cache build, check the
+-- crash log for the last spell ID being processed and add it to the blacklist.
+-- =============================================================================
+
+-- Blacklist of spell IDs known to crash the client in 12.0+
+-- These reference broken PlayerConditions in Blizzard's DBC data
+-- DO NOT query these IDs - it will crash the game client (C++ level, not Lua)
+-- Add new crash IDs here as they are discovered
+local CRASH_SPELL_BLACKLIST = {
+  [257321] = true,   -- PlayerCondition 53723 (confirmed crash)
+  [257322] = true,   -- Adjacent IDs may also be affected
+  [257323] = true,
+  [257324] = true,
+  [1261435] = true,  -- PlayerCondition 151037 (confirmed crash in Silvermoon)
+}
+
+-- Holes in spell ID space - skip from key to value (speeds up iteration)
+-- These are large gaps where no valid spells exist
+-- Format: [start_of_gap] = end_of_gap (will skip from start+1 to end)
+local holes = {
+  -- Standard holes from original WeakAuras (large gaps in spell database)
+  [45085] = 52999,
+  [55740] = 56999,
+  [59999] = 60999,
+  [67999] = 68999,
+  [72999] = 73999,
+  [76099] = 78999,
+  [81099] = 81999,
+  [84999] = 85999,
+  [89999] = 90999,
+  [96999] = 99999,
+  [103999] = 106999,
+  [115999] = 117999,
+  [126999] = 130999,
+  [137999] = 140999,
+  [159999] = 161999,
+  [199999] = 201999,
+  [227999] = 229999,
+  -- MIDNIGHT CRASH RANGES: Skip ranges around known crash spell IDs
+  -- These are C++ crashes, not Lua errors - must skip entirely
+  [257320] = 257330,   -- Range around spell 257321 (PlayerCondition 53723)
+  [1261430] = 1261440, -- Range around spell 1261435 (PlayerCondition 151037)
+}
+
+-- Check if a spell ID is safe to query
+local function IsSpellIdSafe(spellId)
+  if type(spellId) ~= "number" or spellId <= 0 then
+    return false
+  end
+  if CRASH_SPELL_BLACKLIST[spellId] then
+    return false
+  end
+  return true
+end
+
+-- Safely query a spell - returns name, icon or nil if unsafe/missing
+local function SafeGetSpellInfo(spellId)
+  if not IsSpellIdSafe(spellId) then
+    return nil, nil
+  end
+  local name = OptionsPrivate.Private.ExecEnv.GetSpellName(spellId)
+  local icon = OptionsPrivate.Private.ExecEnv.GetSpellIcon(spellId)
+  if name and name ~= "" and icon and icon ~= 136243 then -- 136243 is generic gear icon
+    return name, icon
+  end
+  return nil, nil
+end
+
+-- Add a single spell to the cache (used for on-demand additions)
+local function AddSpellToCache(spellId)
+  local name, icon = SafeGetSpellInfo(spellId)
+  if name and icon then
+    cache[name] = cache[name] or {}
+    if not cache[name].spells or cache[name].spells == "" then
+      cache[name].spells = spellId .. "=" .. icon
+    elseif not cache[name].spells:find(tostring(spellId) .. "=") then
+      cache[name].spells = cache[name].spells .. "," .. spellId .. "=" .. icon
+    end
+    return true
+  end
+  return false
+end
+
 -- Builds a cache of name/icon pairs from existing spell data
--- This is a rather slow operation, so it's only done once, and the result is subsequently saved
+-- MIDNIGHT: Uses brute-force iteration with holes + crash ID blacklist
 function spellCache.Build()
-  if not cache  then
+  if not cache then
     error("spellCache has not been loaded. Call WeakAuras.spellCache.Load(...) first.")
   end
 
@@ -31,70 +130,51 @@ function spellCache.Build()
     return
   end
 
-  local holes
-  if WeakAuras.IsClassicEra() then
-    holes = {}
-    holes[63707] = 81743
-    holes[81748] = 219002
-    holes[219004] = 285223
-    holes[285224] = 301088
-    holes[301101] = 324269
-    holes[474742] = 1213143
-  elseif WeakAuras.IsCataClassic() then
-    holes = {}
-    holes[121820] = 158262
-    holes[158263] = 186402
-    holes[186403] = 219002
-    holes[219004] = 243805
-    holes[243806] = 261127
-    holes[262591] = 281624
-    holes[301101] = 324269
-  elseif WeakAuras.IsMists() then
-    holes = {}
-    holes[171557] = 186402
-    holes[186403] = 219002
-    holes[219004] = 243805
-    holes[243819] = 261127
-    holes[262591] = 281624
-    holes[301101] = 324269
-    holes[473745] = 1214175
-  elseif WeakAuras.IsRetail() then
-    holes = {}
-    holes[474771] = 556604
-    holes[556606] = 936050
-    holes[936051] = 1049295
-    holes[1049296] = 1213133
-  end
   wipe(cache)
   local co = coroutine.create(function()
     metaData.rebuilding = true
+
+    -- Phase 1: Iterate through all spell IDs (with holes for performance)
     local id = 0
     local misses = 0
     while misses < 80000 do
       id = id + 1
-      local name = OptionsPrivate.Private.ExecEnv.GetSpellName(id)
-      local icon = OptionsPrivate.Private.ExecEnv.GetSpellIcon(id)
 
-      if(icon == 136243) then -- 136243 is the a gear icon, we can ignore those spells
-        misses = 0;
-      elseif name and name ~= "" and icon then
-        cache[name] = cache[name] or {}
-
-        if not cache[name].spells or cache[name].spells == "" then
-          cache[name].spells = id .. "=" .. icon
-        else
-          cache[name].spells = cache[name].spells .. "," .. id .. "=" .. icon
-        end
-        misses = 0
-      else
-        misses = misses + 1
+      -- MIDNIGHT CRITICAL: Skip ranges around crash-causing spell IDs
+      -- These cause C++ crashes (not Lua errors) - must skip before querying
+      -- Using small ranges as safety buffer around known crash points
+      if id >= 257320 and id <= 257325 then
+        id = 257326
+      elseif id >= 1261430 and id <= 1261440 then
+        id = 1261441
       end
-      if holes and holes[id] then
+
+      -- Skip holes (large gaps in spell ID space)
+      if holes[id] then
         id = holes[id]
       end
-      coroutine.yield(0.01, "spells")
+
+      -- Skip blacklisted crash IDs (safety check)
+      if not CRASH_SPELL_BLACKLIST[id] then
+        -- Query spell info safely
+        local name, icon = SafeGetSpellInfo(id)
+        if name and icon then
+          cache[name] = cache[name] or {}
+          if not cache[name].spells or cache[name].spells == "" then
+            cache[name].spells = id .. "=" .. icon
+          else
+            cache[name].spells = cache[name].spells .. "," .. id .. "=" .. icon
+          end
+          misses = 0
+        else
+          misses = misses + 1
+        end
+      end
+
+      coroutine.yield(0.1, "spells")
     end
 
+    -- Phase 2: Build from achievements
     if WeakAuras.IsCataOrMistsOrRetail() then
       for _, category in pairs(GetCategoryList()) do
         local total = GetCategoryNumAchievements(category, true)
@@ -306,6 +386,10 @@ function spellCache.CorrectAuraName(input)
     spellId = WeakAuras.SafeToNumber(input:match("|Hspell:(%d+)"))
   end
   if(spellId) then
+    -- MIDNIGHT SAFE: Check blacklist before querying spell ID
+    if CRASH_SPELL_BLACKLIST[spellId] then
+      return "Blocked Spell ID (client crash)", spellId;
+    end
     local name, _, icon = OptionsPrivate.Private.ExecEnv.GetSpellInfo(spellId);
     if(name) then
       spellCache.AddIcon(name, spellId, icon)

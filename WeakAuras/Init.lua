@@ -627,10 +627,10 @@ if WeakAuras.IsWrathClassic() then
     WeakAuras.prettyPrint("This version of WeakAuras is provided as is. We are unable to test it ourselves on CN Servers.")
   end)
 elseif WeakAuras.IsMidnight() then
-  C_Timer.After(1, function()
-    WeakAuras.prettyPrint("WeakAuras does not support Midnight due to Blizzard restricting addons. Read more at https://patreon.com/WeakAuras")
-  end)
-  libsAreOk = false
+  -- Midnight support warning disabled - migration in progress
+  -- C_Timer.After(1, function()
+  --   WeakAuras.prettyPrint("WeakAuras Midnight (12.0) support is experimental. Some features may not work during instanced combat.")
+  -- end)
 end
 
 -- These function stubs are defined here to reduce the number of errors that occur if WeakAuras.lua fails to compile

@@ -11,17 +11,40 @@ local L = WeakAuras.L
 local LibSerialize = LibStub("LibSerialize")
 local LibDeflate = LibStub:GetLibrary("LibDeflate")
 
-local UnitAura = UnitAura
-if UnitAura == nil then
-  --- Deprecated in 10.2.5
+-- MIDNIGHT: Always use safe UnitAura implementation that handles secret values
+-- The global UnitAura (if it exists) may internally call AuraUtil.UnpackAuraData
+-- which crashes when auraData is a secret value. Bypass it entirely.
+local OriginalUnitAura = UnitAura
+local UnitAura
+if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
+  -- Retail/Midnight: Use C_UnitAuras directly with secret value protection
   UnitAura = function(unitToken, index, filter)
-		local auraData = C_UnitAuras.GetAuraDataByIndex(unitToken, index, filter)
-		if not auraData then
-			return nil;
-		end
-
-		return AuraUtil.UnpackAuraData(auraData)
-	end
+    local ok, auraData = pcall(C_UnitAuras.GetAuraDataByIndex, unitToken, index, filter)
+    if not ok or not auraData then
+      return nil
+    end
+    -- MIDNIGHT: auraData may be a secret value, check before unpacking
+    if type(auraData) ~= "table" then
+      return nil  -- Secret value, can't unpack
+    end
+    return AuraUtil.UnpackAuraData(auraData)
+  end
+elseif OriginalUnitAura then
+  -- Classic/older versions: Wrap existing UnitAura
+  UnitAura = function(unitToken, index, filter)
+    local ok, name, icon, count, debuffType, duration, expirationTime, source, isStealable,
+          nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer,
+          nameplateShowAll, timeMod = pcall(OriginalUnitAura, unitToken, index, filter)
+    if not ok then
+      return nil
+    end
+    return name, icon, count, debuffType, duration, expirationTime, source, isStealable,
+           nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer,
+           nameplateShowAll, timeMod
+  end
+else
+  -- Fallback: return nil for all calls
+  UnitAura = function() return nil end
 end
 
 -- Unit Aura functions that return info about the first Aura matching the spellName or spellID given on the unit.
@@ -546,7 +569,16 @@ local overridden = {
   WA_Utf8Sub = WA_Utf8Sub,
   ActionButton_ShowOverlayGlow = WeakAuras.ShowOverlayGlow,
   ActionButton_HideOverlayGlow = WeakAuras.HideOverlayGlow,
-  WeakAuras = FakeWeakAuras
+  WeakAuras = FakeWeakAuras,
+  -- MIDNIGHT: Safe wrappers for APIs that return secret values in instanced combat
+  -- These intercept calls in custom aura code to prevent errors
+  UnitHealth = Private.SafeUnitHealth,
+  UnitHealthMax = Private.SafeUnitHealthMax,
+  UnitPower = Private.SafeUnitPower,
+  UnitPowerMax = Private.SafeUnitPowerMax,
+  GetSpellCooldown = Private.SafeGetSpellCooldown,
+  -- UnitAura is wrapped at the top of this file with pcall protection
+  UnitAura = UnitAura,
 }
 
 -- WORKAROUND API which return Mixin'd values need those mixin "rawgettable" in caller's fenv #5071
@@ -623,7 +655,16 @@ function env_getglobal_custom(k)
 end
 
 local PrivateForBuiltIn = {
-  ExecEnv = Private.ExecEnv
+  ExecEnv = Private.ExecEnv,
+  IsValueSecret = Private.IsValueSecret,
+  SafeCompare = Private.SafeCompare,
+  SafeArithmetic = Private.SafeArithmetic,
+  SafeFormat = Private.SafeFormat,
+  SafeTableKey = Private.SafeTableKey,
+  SafeToNumber = Private.SafeToNumber,
+  SafeFloor = Private.SafeFloor,
+  SafeCeil = Private.SafeCeil,
+  SafeAbs = Private.SafeAbs,
 }
 
 local env_getglobal_builtin

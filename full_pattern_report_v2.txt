@@ -1,0 +1,437 @@
+============================================================
+PATTERN SCAN: WeakAuras
+Scanned: 198 files
+Generated: 2025-12-22 13:15
+============================================================
+
+This scan finds OPERATIONS on secret value variables.
+Run scanner.py first to find the API calls themselves.
+
+[HIGH RISK] - Direct operations on tracked secret variables
+--------------------------------------------------
+  WeakAurasOptions\GenericTrigger.lua:408
+    Arithmetic on secret variable: duration
+    Code: OptionsPrivate.commonOptions.AddCodeOption(customOptions, data, L["Duration Info...
+
+
+[MEDIUM RISK] - Heuristic matches (review manually)
+--------------------------------------------------
+  WeakAuras\Animations.lua:48
+    Possible secret variable operation (==): remaining
+    Code: if remaining == nil or Private.IsValueSecret(region.duration) then...
+
+  WeakAuras\BossMods.lua:830
+    Possible secret variable operation (~=): cooldown
+    Code: if cooldown ~= nil and v.isCooldown ~= cooldown then...
+
+  WeakAuras\BossMods.lua:830
+    Possible secret variable operation (~=): isCooldown
+    Code: if cooldown ~= nil and v.isCooldown ~= cooldown then...
+
+  WeakAuras\BossMods.lua:1380
+    Possible secret variable operation (==): use_isCooldown
+    Code: trigger.use_isCooldown == nil and "nil" or trigger.use_isCooldown and "true" or ...
+
+  WeakAuras\BuffTrigger2.lua:512
+    Possible secret variable operation (==): stacksChanged
+    Code: if stacksChanged or stacksChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:528
+    Possible secret variable operation (==): durationChanged
+    Code: if durationChanged or durationChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:534
+    Possible secret variable operation (==): expirationTimeChanged
+    Code: if expirationTimeChanged or expirationTimeChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:556
+    Possible secret variable operation (==): spellIdChanged
+    Code: if spellIdChanged or spellIdChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:658
+    Possible secret variable operation (==): remaining
+    Code: if remaining == nil then...
+
+  WeakAuras\BuffTrigger2.lua:704
+    Possible secret variable operation (==): remaining
+    Code: if remaining == nil then...
+
+  WeakAuras\BuffTrigger2.lua:846
+    Possible secret variable operation (==): _stacksChanged
+    Code: if _stacksChanged or _stacksChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:851
+    Possible secret variable operation (==): _stacksLess
+    Code: elseif _stacksLess == false or _stacksLess == nil then...
+
+  WeakAuras\BuffTrigger2.lua:851
+    Possible secret variable operation (==): _stacksLess
+    Code: elseif _stacksLess == false or _stacksLess == nil then...
+
+  WeakAuras\BuffTrigger2.lua:870
+    Possible secret variable operation (==): _durationChanged
+    Code: if _durationChanged or _durationChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:882
+    Possible secret variable operation (==): _expirationTimeChanged
+    Code: if _expirationTimeChanged or _expirationTimeChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:910
+    Possible secret variable operation (==): _spellIdChanged
+    Code: if _spellIdChanged or _spellIdChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:921
+    Possible secret variable operation (==): _auraInstanceIDChanged
+    Code: if _auraInstanceIDChanged or _auraInstanceIDChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:999
+    Possible secret variable operation (==): _totalStacksChanged
+    Code: if _totalStacksChanged or _totalStacksChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:1199
+    Possible secret variable operation (==): _totalStacksChanged
+    Code: if _totalStacksChanged or _totalStacksChanged == nil then...
+
+  WeakAuras\BuffTrigger2.lua:1623
+    Possible secret variable operation (==): remaining
+    Code: if remaining == nil then...
+
+  WeakAuras\BuffTrigger2.lua:2015
+    Possible secret variable operation (~=): updatedAuraInstanceIDs
+    Code: if unitAuraUpdateInfo.updatedAuraInstanceIDs ~= nil then...
+
+  WeakAuras\BuffTrigger2.lua:2024
+    Possible secret variable operation (~=): removedAuraInstanceIDs
+    Code: if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then...
+
+  WeakAuras\BuffTrigger2.lua:3273
+    Possible secret variable operation (~=): spellIdString
+    Code: if spellIdString ~= "" then...
+
+  WeakAuras\BuffTrigger2.lua:4113
+    Possible secret variable operation (~=): stacks
+    Code: if matchData.stacks ~= stacks then...
+
+  WeakAuras\BuffTrigger2.lua:4458
+    Possible secret variable operation (>): auraspellids
+    Code: if #trigger.auraspellids > 0 then...
+
+  WeakAuras\BuffTrigger2.lua:4459
+    Possible secret variable operation (>): auraspellids
+    Code: if #trigger.auraspellids > 1 then...
+
+  WeakAuras\GenericTrigger.lua:1109
+    Possible secret variable operation (~=): customDuration
+    Code: elseif (trigger.customDuration and trigger.customDuration ~= "") then...
+
+  WeakAuras\GenericTrigger.lua:1789
+    Possible secret variable operation (~=): customDuration
+    Code: if(trigger.custom_type ~= "stateupdate" and trigger.customDuration and trigger.c...
+
+  WeakAuras\GenericTrigger.lua:1810
+    Possible secret variable operation (~=): customStacks
+    Code: if(trigger.custom_type ~= "stateupdate" and trigger.customStacks and trigger.cus...
+
+  WeakAuras\GenericTrigger.lua:2602
+    Possible secret variable operation (~=): oldEffectiveSpellId
+    Code: if oldEffectiveSpellId ~= newEffectiveSpellId then...
+
+  WeakAuras\GenericTrigger.lua:2614
+    Possible secret variable operation (~=): chargesMax
+    Code: or oldSpellDetail.chargesMax ~= newSpellDetail.maxCharges...
+
+  WeakAuras\GenericTrigger.lua:2696
+    Possible secret variable operation (~=): chargesMax
+    Code: or spellDetail.chargesMax ~= maxCharges...
+
+  WeakAuras\GenericTrigger.lua:2735
+    Possible secret variable operation (~=): chargesDifference
+    Code: if (chargesDifference ~= 0 ) then...
+
+  WeakAuras\GenericTrigger.lua:2746
+    Possible secret variable operation (==): userSpellId
+    Code: if not userSpellId or userSpellId == 0 then...
+
+  WeakAuras\GenericTrigger.lua:2779
+    Possible secret variable operation (~=): userSpellId
+    Code: if userSpellId ~= effectiveSpellId then...
+
+  WeakAuras\GenericTrigger.lua:2937
+    Possible secret variable operation (==): mark_ACTIONBAR_UPDATE_COOLDOWN
+    Code: if mark_PLAYER_ENTERING_WORLD == nil and mark_ACTIONBAR_UPDATE_COOLDOWN == nil t...
+
+  WeakAuras\GenericTrigger.lua:2975
+    Possible secret variable operation (~=): powerType
+    Code: if powerType and powerType ~= "ESSENCE" then...
+
+  WeakAuras\GenericTrigger.lua:3311
+    Possible secret variable operation (>): durationCooldown
+    Code: if (durationCooldown > 604800) then...
+
+  WeakAuras\GenericTrigger.lua:3311
+    Possible secret variable operation (>): durationCooldown
+    Code: if (durationCooldown > 604800) then...
+
+  WeakAuras\GenericTrigger.lua:3316
+    Possible secret variable operation (>): startTimeCooldown
+    Code: if (startTimeCooldown > GetTime() + 2^31 / 1000) then...
+
+  WeakAuras\GenericTrigger.lua:3334
+    Possible secret variable operation (<=): durationCooldown
+    Code: if not enabled and durationCooldown <= 0.5 then...
+
+  WeakAuras\GenericTrigger.lua:3334
+    Possible secret variable operation (<=): durationCooldown
+    Code: if not enabled and durationCooldown <= 0.5 then...
+
+  WeakAuras\GenericTrigger.lua:3338
+    Possible secret variable operation (>): durationCooldown
+    Code: local onNonGCDCD = durationCooldown and startTimeCooldown and durationCooldown >...
+
+  WeakAuras\GenericTrigger.lua:3338
+    Possible secret variable operation (~=): durationCooldown
+    Code: local onNonGCDCD = durationCooldown and startTimeCooldown and durationCooldown >...
+
+  WeakAuras\GenericTrigger.lua:3338
+    Possible secret variable operation (>): durationCooldown
+    Code: local onNonGCDCD = durationCooldown and startTimeCooldown and durationCooldown >...
+
+  WeakAuras\GenericTrigger.lua:3338
+    Possible secret variable operation (~=): durationCooldown
+    Code: local onNonGCDCD = durationCooldown and startTimeCooldown and durationCooldown >...
+
+  WeakAuras\GenericTrigger.lua:3338
+    Possible secret variable operation (~=): startTimeCooldown
+    Code: local onNonGCDCD = durationCooldown and startTimeCooldown and durationCooldown >...
+
+  WeakAuras\GenericTrigger.lua:4091
+    Possible secret variable operation (==): spellId
+    Code: if spellId == triggerSpellId then...
+
+  WeakAuras\GenericTrigger.lua:4096
+    Possible secret variable operation (==): spellId
+    Code: if spellId == FindSpellOverrideByID(triggerSpellId) then...
+
+  WeakAuras\GenericTrigger.lua:5096
+    Possible secret variable operation (~=): customDuration
+    Code: if (canHaveDurationFunc and trigger.customDuration and trigger.customDuration ~=...
+
+  WeakAuras\GenericTrigger.lua:5103
+    Possible secret variable operation (~=): dynamicDuration
+    Code: if (trigger.custom_type == "event" and trigger.custom_hide ~= "custom" and trigg...
+
+  WeakAuras\GenericTrigger.lua:5109
+    Possible secret variable operation (~=): customStacks
+    Code: if (trigger.customStacks and trigger.customStacks ~= "") then...
+
+  WeakAuras\Modernize.lua:191
+    Possible secret variable operation (~=): cooldownTextEnabled
+    Code: if data.cooldownTextEnabled ~= nil then...
+
+  WeakAuras\Prototypes.lua:836
+    Possible secret variable operation (==): selectedSpellId
+    Code: if selectedSpellId == spellId then...
+
+  WeakAuras\Prototypes.lua:3752
+    Possible secret variable operation (==): powertype
+    Code: if trigger.use_powertype and trigger.powertype == 4 then...
+
+  WeakAuras\Prototypes.lua:3775
+    Possible secret variable operation (==): powertype
+    Code: if trigger.use_powertype and trigger.powertype == 99 and trigger.unit == "player...
+
+  WeakAuras\Prototypes.lua:3782
+    Possible secret variable operation (==): powertype
+    Code: if WeakAuras.IsCataOrMists() and trigger.unit == "player" and trigger.use_powert...
+
+  WeakAuras\Prototypes.lua:3785
+    Possible secret variable operation (==): powertype
+    Code: if WeakAuras.IsCataOrMists() and trigger.unit == "player" and trigger.use_powert...
+
+  WeakAuras\Prototypes.lua:3810
+    Possible secret variable operation (==): powerType
+    Code: if not WeakAuras.IsRetail() and powerType == 99 then powerType = 1 end...
+
+  WeakAuras\Prototypes.lua:3833
+    Possible secret variable operation (==): powerType
+    Code: elseif powerType == 4 and trigger.unit == 'player' then...
+
+  WeakAuras\Prototypes.lua:3852
+    Possible secret variable operation (==): powerType
+    Code: elseif WeakAuras.IsMists() and powerType == 99 then...
+
+  WeakAuras\Prototypes.lua:3858
+    Possible secret variable operation (==): powerType
+    Code: elseif WeakAuras.IsMists() and (powerType == 14 or powerType == 7) then...
+
+  WeakAuras\Prototypes.lua:3858
+    Possible secret variable operation (==): powerType
+    Code: elseif WeakAuras.IsMists() and (powerType == 14 or powerType == 7) then...
+
+  WeakAuras\Prototypes.lua:3882
+    Possible secret variable operation (~=): powertype
+    Code: local canEnableShowCost = (not trigger.use_powertype or trigger.powertype ~= 99)...
+
+  WeakAuras\Prototypes.lua:3942
+    Possible secret variable operation (~=): powertype
+    Code: return (not trigger.use_powertype or trigger.powertype ~= 99) and trigger.unit =...
+
+  WeakAuras\Prototypes.lua:3953
+    Possible secret variable operation (==): powertype
+    Code: return WeakAuras.IsRetail() and trigger.unit == 'player' and trigger.use_powerty...
+
+  WeakAuras\Prototypes.lua:3963
+    Possible secret variable operation (==): powertype
+    Code: return WeakAuras.IsRetail() and trigger.unit == 'player'and trigger.use_powertyp...
+
+  WeakAuras\Prototypes.lua:3974
+    Possible secret variable operation (==): powertype
+    Code: return trigger.use_powertype and trigger.powertype == 99...
+
+  WeakAuras\Prototypes.lua:3987
+    Possible secret variable operation (==): powertype
+    Code: return WeakAuras.IsCataOrMists() and trigger.unit == "player" and trigger.use_po...
+
+  WeakAuras\Prototypes.lua:4272
+    Possible secret variable operation (~=): powertype
+    Code: return trigger.use_showCost and (not trigger.use_powertype or trigger.powertype ...
+
+  WeakAuras\Prototypes.lua:4284
+    Possible secret variable operation (==): powertype
+    Code: return WeakAuras.IsRetail() and trigger.unit == 'player' and trigger.use_powerty...
+
+  WeakAuras\Prototypes.lua:5391
+    Possible secret variable operation (~=): maxCharges
+    Code: local stacks = maxCharges and maxCharges ~= 1 and charges or (spellCount and spe...
+
+  WeakAuras\Prototypes.lua:5399
+    Possible secret variable operation (==): charges
+    Code: if (charges == nil) then...
+
+  WeakAuras\Prototypes.lua:5401
+    Possible secret variable operation (==): duration
+    Code: charges = (duration == 0 or gcdCooldown) and 1 or 0;...
+
+  WeakAuras\Prototypes.lua:5426
+    Possible secret variable operation (~=): remaining
+    Code: if state.remaining ~= startTime then...
+
+  WeakAuras\Prototypes.lua:6214
+    Possible secret variable operation (==): stacks
+    Code: if ((stacks == 1) and (not GetInventoryItemTexture("player", itemSlot or 0))) th...
+
+  WeakAuras\Prototypes.lua:6798
+    Possible secret variable operation (>): maxCharges
+    Code: local stacks = maxCharges and maxCharges > 1 and charges...
+
+  WeakAuras\Prototypes.lua:6801
+    Possible secret variable operation (==): charges
+    Code: if (charges == nil) then...
+
+  WeakAuras\Prototypes.lua:7556
+    Possible secret variable operation (%): remaining
+    Code: return remaining %s remainingCheck;...
+
+  WeakAuras\Prototypes.lua:7588
+    Possible secret variable operation (>=): remainingTime
+    Code: if (remainingTime >= remainingCheck) then...
+
+  WeakAuras\Prototypes.lua:7643
+    Possible secret variable operation (>=): remainingTime
+    Code: if (remainingTime >= remainingCheck) then...
+
+  WeakAuras\Prototypes.lua:8058
+    Possible secret variable operation (%): stacks
+    Code: local stackCheck = not triggerStack or stacks and stacks %s triggerStack...
+
+  WeakAuras\Prototypes.lua:8059
+    Possible secret variable operation (%): remaining
+    Code: local remainingCheck = not triggerRemaining or remaining and remaining %s trigge...
+
+  WeakAuras\Prototypes.lua:12443
+    Possible secret variable operation (==): remaining
+    Code: if remaining == math.huge then...
+
+  WeakAuras\Prototypes.lua:12447
+    Possible secret variable operation (%): remaining
+    Code: remaining = remaining % 60;...
+
+  WeakAuras\Prototypes.lua:12450
+    Possible secret variable operation (<=): remaining
+    Code: if progressPrecision == 4 and remaining <= 3 then...
+
+  WeakAuras\Prototypes.lua:12452
+    Possible secret variable operation (<=): remaining
+    Code: elseif progressPrecision == 5 and remaining <= 3 then...
+
+  WeakAuras\Prototypes.lua:12454
+    Possible secret variable operation (<=): remaining
+    Code: elseif progressPrecision == 6 and remaining <= 3 then...
+
+  WeakAuras\Prototypes.lua:12456
+    Possible secret variable operation (>): remaining
+    Code: elseif (progressPrecision == 4 or progressPrecision == 5 or progressPrecision ==...
+
+  WeakAuras\Prototypes.lua:12534
+    Possible secret variable operation (==): stacks
+    Code: if state.stacks == 0 then return "" end...
+
+  WeakAuras\SecretValueHelpers.lua:158
+    Possible secret variable operation (>): remaining
+    Code: return remaining > 0 and remaining or 0...
+
+  WeakAuras\Types.lua:3069
+    Possible secret variable operation (*): power
+    Code: return (percent * 2.0) ^ power * .5;...
+
+  WeakAuras\Types.lua:3071
+    Possible secret variable operation (*): power
+    Code: return 1.0 - ((1.0 - percent) * 2.0) ^ power * .5;...
+
+  WeakAuras\RegionTypes\AuraBar.lua:784
+    Possible secret variable operation (~=): duration
+    Code: local progress = (duration and duration ~= 0) and (remaining or 0) / duration or...
+
+  WeakAuras\RegionTypes\Icon.lua:607
+    Possible secret variable operation (==): durationPositive
+    Code: local hasSecretValues = (durationPositive == nil) or (notExpired == nil)...
+
+  WeakAuras\SubRegionTypes\StopMotion.lua:154
+    Possible secret variable operation (==): remaining
+    Code: if remaining == nil or Private.IsValueSecret(self.progressData.duration) then...
+
+  WeakAurasOptions\Cache.lua:165
+    Possible secret variable operation (~=): spellId
+    Code: if not bestMatch or (spellId and spellId ~= 0 and IsSpellKnown(spellId)) then...
+
+  WeakAurasOptions\LoadOptions.lua:733
+    Possible secret variable operation (<): spellID
+    Code: if arg.negativeIsEJ and WeakAuras.IsRetail() and spellID < 0 then...
+
+  WeakAurasOptions\WeakAurasOptions.lua:1747
+    Possible secret variable operation (-): Stacks
+    Code: {type = "mini", name = "s", desc = L["Stacks - The number of stacks of an aura (...
+
+  WeakAurasOptions\OptionsFrames\FrameChooser.lua:77
+    Possible secret variable operation (==): focusName
+    Code: if(focusName == "WorldFrame" or not focusName) then...
+
+  WeakAurasOptions\OptionsFrames\FrameChooser.lua:92
+    Possible secret variable operation (~=): focus
+    Code: if(focus ~= oldFocus) then...
+
+  WeakAurasOptions\OptionsFrames\FrameChooser.lua:100
+    Possible secret variable operation (~=): focusName
+    Code: if(focusName ~= oldFocusName) then...
+
+
+============================================================
+SUMMARY
+============================================================
+  High Risk:   1
+  Medium Risk: 102
+
+FIX STRATEGIES:
+  - Passthrough: Pass values directly to StatusBar/Cooldown widgets
+  - Check first: Use issecretvalue() before operations
+  - Degrade: Show '...' when values are secret

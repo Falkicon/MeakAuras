@@ -1670,24 +1670,25 @@ Private.power_types = {
   [18] = POWER_TYPE_PAIN
 }
 if WeakAuras.IsRetail() then
-  Private.power_types[19] = POWER_TYPE_ESSENCE
   Private.power_types[99] = STAGGER
+  Private.power_types[19] = POWER_TYPE_ESSENCE
+elseif WeakAuras.IsCataClassic() then
+  Private.power_types[8] = nil
+  Private.power_types[12] = nil
+  Private.power_types[13] = nil
+  Private.power_types[16] = nil
+  Private.power_types[17] = nil
+  Private.power_types[18] = nil
 elseif WeakAuras.IsMists() then
-  for _, k in ipairs{8, 13, 16, 17, 18} do
-    Private.power_types[k] = nil
-  end
+  Private.power_types[8] = nil
   Private.power_types[14] = BURNING_EMBERS
+  Private.power_types[13] = nil
   Private.power_types[15] = POWER_TYPE_DEMONIC_FURY
+  Private.power_types[16] = nil
+  Private.power_types[17] = nil
+  Private.power_types[18] = nil
   Private.power_types[28] = SHADOW_ORBS
   Private.power_types[99] = L["Stagger"]
-elseif WeakAuras.IsCataClassic() then
-  for _, k in ipairs{8, 12, 13, 16, 17, 18} do
-    Private.power_types[k] = nil
-  end
-elseif WeakAuras.IsWrathClassic() then
-  for k = 7, 18 do
-    Private.power_types[k] = nil
-  end
 end
 
 if WeakAuras.IsCataOrMists() then
@@ -3131,14 +3132,10 @@ Private.instance_types = {
   ratedarena = L["Rated Arena"]
 }
 
-if WeakAuras.IsClassicOrWrath() then
+if WeakAuras.IsClassicEra() then
   Private.instance_types["ratedpvp"] = nil
+  Private.instance_types["arena"] = nil
   Private.instance_types["ratedarena"] = nil
-  Private.instance_types["flexible"] = nil
-  Private.instance_types["scenario"] = nil
-  if WeakAuras.IsClassicEra() then
-    Private.instance_types["arena"] = nil
-  end
 end
 
 ---@type table
@@ -3212,12 +3209,12 @@ if not WeakAuras.IsClassicEra() then
     [232] = unused, -- event party
     [236] = L["Lorewalking"],
     [237] = WeakAuras.IsMists() and L["Dungeon (Celestial)"] or unused,
-    [244] = L["25 Player Raid (Titan Reforged)"],
+    [241] = L["Lorewalking Raid"],  -- Added in Midnight (12.0)
   }
 
   Private.instance_difficulty_types[0] =L["None"]
 
-  for i = 1, 260 do
+  for i = 1, 250 do  -- Extended for Midnight (12.0) new difficulties
     local name, type = GetDifficultyInfo(i)
     if name then
       if instance_difficulty_names[i] then
@@ -3234,17 +3231,18 @@ end
 
 ---@type table<number, string>
 Private.TocToExpansion = {
-  [1] = L["Classic"],
-  [2] = L["Burning Crusade"],
-  [3] = L["Wrath of the Lich King"],
-  [4] = L["Cataclysm"],
-  [5] = L["Mists of Pandaria"],
-  [6] = L["Warlords of Draenor"],
-  [7] = L["Legion"],
-  [8] = L["Battle for Azeroth"],
-  [9] = L["Shadowlands"],
+   [1] = L["Classic"],
+   [2] = L["Burning Crusade"],
+   [3] = L["Wrath of the Lich King"],
+   [4] = L["Cataclysm"],
+   [5] = L["Mists of Pandaria"],
+   [6] = L["Warlords of Draenor"],
+   [7] = L["Legion"],
+   [8] = L["Battle for Azeroth"],
+   [9] = L["Shadowlands"],
   [10] = L["Dragonflight"],
-  [11] = L["The War Within"]
+  [11] = L["The War Within"],
+  [12] = L["Midnight"]  -- Added for Midnight (12.0)
 }
 
 ---@type table<string, string>
@@ -3255,24 +3253,32 @@ Private.group_types = {
 }
 
 ---@type table<string, string>
-Private.difficulty_types = {
-  none   = L["None"],
-  normal = PLAYER_DIFFICULTY1,
-  heroic = PLAYER_DIFFICULTY2,
-}
 if WeakAuras.IsRetail() then
-  Private.difficulty_types.mythic = PLAYER_DIFFICULTY6
-  Private.difficulty_types.timewalking = PLAYER_DIFFICULTY_TIMEWALKER
-  Private.difficulty_types.lfr = PLAYER_DIFFICULTY3
-  Private.difficulty_types.challenge = PLAYER_DIFFICULTY5
-elseif WeakAuras.IsMists() then
-  Private.difficulty_types.mythic = PLAYER_DIFFICULTY6
-  Private.difficulty_types.lfr = PLAYER_DIFFICULTY3
-  Private.difficulty_types.challenge = PLAYER_DIFFICULTY5
+  Private.difficulty_types = {
+    none = L["None"],
+    normal = PLAYER_DIFFICULTY1,
+    heroic = PLAYER_DIFFICULTY2,
+    mythic = PLAYER_DIFFICULTY6,
+    timewalking = PLAYER_DIFFICULTY_TIMEWALKER,
+    lfr = PLAYER_DIFFICULTY3,
+    challenge = PLAYER_DIFFICULTY5
+  }
 elseif WeakAuras.IsCataClassic() then
-  Private.difficulty_types.lfr = PLAYER_DIFFICULTY3
-elseif WeakAuras.IsWrathClassic() then
-  Private.difficulty_types.titan = L["Titan Reforged"]
+  Private.difficulty_types = {
+    none = L["None"],
+    lfr = PLAYER_DIFFICULTY3,
+    normal = PLAYER_DIFFICULTY1,
+    heroic = PLAYER_DIFFICULTY2,
+  }
+elseif WeakAuras.IsMists() then
+  Private.difficulty_types = {
+    none = L["None"],
+    normal = PLAYER_DIFFICULTY1,
+    heroic = PLAYER_DIFFICULTY2,
+    mythic = PLAYER_DIFFICULTY6,
+    lfr = PLAYER_DIFFICULTY3,
+    challenge = PLAYER_DIFFICULTY5
+  }
 end
 
 ---@type table<string, string>
@@ -4311,10 +4317,6 @@ Private.difficulty_info = {
     size = "twenty",
     difficulty = "normal",
   },
-  [244] = {
-    size = "twentyfive",
-    difficulty = "titan",
-  },
 }
 
 Private.glow_types = {
@@ -4529,6 +4531,7 @@ WeakAuras.StopMotion.texture_types.Basic = {
 }
 
 WeakAuras.StopMotion.texture_data["Interface\\AddOns\\WeakAuras\\Media\\Textures\\stopmotion"] = { count = 64, rows = 8, columns = 8 }
+
 
 WeakAuras.StopMotion.animation_types = {
   loop = L["Loop"],

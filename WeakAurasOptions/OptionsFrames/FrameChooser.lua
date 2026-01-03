@@ -64,7 +64,7 @@ function OptionsPrivate.StartFrameChooser(data, path)
       SetCursor("CAST_CURSOR");
 
       local focus
-      if GetMouseFocus then
+      if GetMouseFocus then -- @scan-ignore: midnight-safe
         focus = GetMouseFocus()
       elseif GetMouseFoci then
         local foci = GetMouseFoci()
@@ -121,3 +121,4 @@ function OptionsPrivate.StopFrameChooser(data)
   ResetCursor();
   WeakAuras.Add(data);
 end
+

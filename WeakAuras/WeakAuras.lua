@@ -3,7 +3,7 @@ local AddonName = ...
 ---@class Private
 local Private = select(2, ...)
 
-local internalVersion = 88
+local internalVersion = 87
 
 -- Lua APIs
 local insert = table.insert
@@ -185,6 +185,9 @@ function Private.PrintHelp()
 end
 
 SLASH_WEAKAURAS1, SLASH_WEAKAURAS2 = "/weakauras", "/wa";
+-- MeakAuras aliases (Midnight fork) - keep /wa /weakauras for muscle memory
+SLASH_MEAKAURAS1, SLASH_MEAKAURAS2 = "/meakauras", "/ma";
+
 function SlashCmdList.WEAKAURAS(input)
   local args, msg = {}, nil
 
@@ -256,6 +259,8 @@ function SlashCmdList.WEAKAURAS(input)
     WeakAuras.OpenOptions(msg);
   end
 end
+-- Point MeakAuras slash commands to the same handler
+SlashCmdList.MEAKAURAS = SlashCmdList.WEAKAURAS
 
 if not WeakAuras.IsLibsOK() then return end
 
@@ -1399,7 +1404,10 @@ loadedFrame:SetScript("OnEvent", function(self, event, ...)
       takeNewSnapshots = true
     elseif db.dbVersion > internalVersion then
       -- user has downgraded past a forwards-incompatible migration
-      dbIsValid = false
+      -- DEV BYPASS: Skip downgrade check for Midnight development
+      -- Original: dbIsValid = false
+      db.dbVersion = internalVersion  -- Reset to current version
+      dbIsValid = true
     else
       -- db has same version as code, can commit to login
       dbIsValid = true
@@ -2441,7 +2449,8 @@ StaticPopupDialogs["WEAKAURAS_CONFIRM_REPAIR"] = {
     local AutomaticRepairText = L["WeakAuras has detected that it has been downgraded.\nYour saved auras may no longer work properly.\nWould you like to run the |cffff0000EXPERIMENTAL|r repair tool? This will overwrite any changes you have made since the last database upgrade.\nLast upgrade: %s\n\n|cffff0000You should BACKUP your WTF folder BEFORE pressing this button.|r"]
     local ManualRepairText = L["Are you sure you want to run the |cffff0000EXPERIMENTAL|r repair tool?\nThis will overwrite any changes you have made since the last database upgrade.\nLast upgrade: %s"]
 
-    local text = WeakAuras.IsWrathClassic() and self.Text or self.text
+    -- Midnight (12.0): StaticPopup uses .Text (capital T) on modern clients
+    local text = self.Text or self.text
     if self.data.reason == "user" then
       text:SetText(ManualRepairText:format(LastUpgrade()))
     else

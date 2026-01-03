@@ -1,9 +1,9 @@
-## Interface: 110205
-## Title: WeakAuras Model Paths
-## Author: The WeakAuras Team
+## Interface: 120001
+## Title: MeakAuras Model Paths
+## Author: MeakAuras Team (fork of WeakAuras)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\WeakAuras\Media\Textures\icon.blp
-## Notes: Model paths for WeakAuras
+## Notes: Model paths for MeakAuras
 ## Notes-esES: Las rutas de modelos para WeakAuras
 ## Notes-esMX: Las rutas de modelos para WeakAuras
 ## Notes-deDE: 3D-Model Pfade für WeakAuras

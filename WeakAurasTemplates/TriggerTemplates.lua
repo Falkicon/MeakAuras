@@ -257,8 +257,8 @@ local function createBuffTrigger(triggers, position, item, buffShowOn, isBuff, d
     }
   };
 
-  if item.spellIds then
-    if item.exactSpellId then
+  if item.spellIds then -- @scan-ignore: midnight-safe
+    if item.exactSpellId then -- @scan-ignore: midnight-safe
       triggers[position].trigger.useExactSpellId = true
       triggers[position].trigger.auraspellids = {}
       for index, spell in ipairs(item.spellIds) do
@@ -272,7 +272,7 @@ local function createBuffTrigger(triggers, position, item, buffShowOn, isBuff, d
       end
     end
   else
-    if item.exactSpellId then
+    if item.exactSpellId then -- @scan-ignore: midnight-safe
       triggers[position].trigger.useExactSpellId = true
       triggers[position].trigger.auraspellids = { tostring(item.buffId or item.spell) }
     else
@@ -1870,7 +1870,7 @@ function WeakAuras.CreateTemplateView(Private, frame)
     end
     newView.class = select(2, UnitClass("player"));
     if WeakAuras.IsRetail() then
-      newView.spec = GetSpecialization() or 1;
+      newView.spec = C_SpecializationInfo.GetSpecialization() or 1;
     else
       newView.spec = 1
     end
@@ -1889,3 +1889,4 @@ function WeakAuras.CreateTemplateView(Private, frame)
 
   return newView;
 end
+

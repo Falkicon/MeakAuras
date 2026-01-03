@@ -1,10 +1,10 @@
-## Interface: 110205
-## Title: WeakAuras
-## Author: The WeakAuras Team
+## Interface: 120001
+## Title: MeakAuras
+## Author: MeakAuras Team (fork of WeakAuras)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\WeakAuras\Media\Textures\icon.blp
 ## X-Flavor: Mainline
-## Notes: A powerful, comprehensive utility for displaying graphics and information based on buffs, debuffs, and other triggers.
+## Notes: MeakAuras - A Midnight-compatible fork of WeakAuras. Powerful aura display with secret value handling for WoW 12.0+.
 ## Notes-esES: Potente y completa aplicación que te permitirá mostrar por pantalla múltiples diseños, basados en beneficios, perjuicios y otros activadores.
 ## Notes-esMX: Potente y completa aplicación que te permitirá mostrar por pantalla múltiples diseños, basados en beneficios, perjuicios y otros activadores.
 ## Notes-deDE: Ein leistungsfähiges, umfassendes Addon zur grafischen Darstellung von Informationen von Auren, Cooldowns, Timern und vielem mehr.
@@ -32,6 +32,9 @@ Libs\LibSpecialization\LibSpecialization.lua
 Libs\LibDispel\LibDispel.lua
 
 Init.lua
+SecretValueHelpers.lua
+DegradedState.lua
+MidnightAffectedTriggers.lua
 Compatibility.lua
 locales.xml
 ArchiveTypes\Repository.lua

@@ -1,9 +1,9 @@
-## Interface: 110205
-## Title: WeakAuras Templates
-## Author: The WeakAuras Team
+## Interface: 120001
+## Title: MeakAuras Templates
+## Author: MeakAuras Team (fork of WeakAuras)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\WeakAuras\Media\Textures\icon.blp
-## Notes: Templates for WeakAuras
+## Notes: Templates for MeakAuras
 ## Notes-esES: Plantillas para WeakAuras
 ## Notes-esMX: Plantillas para WeakAuras
 ## X-Category: Interface Enhancements

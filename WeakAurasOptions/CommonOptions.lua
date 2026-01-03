@@ -1100,7 +1100,7 @@ local function ProgressOptions(data)
   options.progressSourceWarning = {
     type = "description",
     width = WeakAuras.doubleWidth,
-    name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""],
+    name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""], -- @scan-ignore: midnight-safe
     order = order + 0.5,
     hidden = function()
       local progressSource = OptionsPrivate.Private.AddProgressSourceMetaData(data, data.progressSource)
@@ -1622,7 +1622,7 @@ local function ProgressOptionsForSubElement(parentData, data, options, startOrde
   options.progressSourceWarning = {
     type = "description",
     width = WeakAuras.doubleWidth,
-    name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""],
+    name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""], -- @scan-ignore: midnight-safe
     order = startOrder + 0.1,
     hidden = function()
       if type(progressSourceHidden) == "function" and progressSourceHidden() then
@@ -2116,4 +2116,5 @@ OptionsPrivate.commonOptions.AddCodeOption = AddCodeOption
 
 OptionsPrivate.commonOptions.AddCommonTriggerOptions = AddCommonTriggerOptions
 OptionsPrivate.commonOptions.AddTriggerGetterSetter = AddTriggerGetterSetter
+
 

@@ -1924,8 +1924,8 @@ function Private.Modernize(data, oldSnapshot)
         end
         -- cast trigger move data from 'spell' & 'spellId' to 'spellIds' & 'spellNames'
         if t.event == "Cast" and t.type == "unit" then
-          if t.spellId then
-            if t.useExactSpellId then
+          if t.spellId then -- @scan-ignore: midnight-safe
+            if t.useExactSpellId then -- @scan-ignore: midnight-safe
               t.use_spellIds = t.use_spellId
               t.spellIds = t.spellIds or {}
               tinsert(t.spellIds, t.spellId)

@@ -4377,8 +4377,8 @@ WeakAuras.ModelPaths = {
     value = "cooldown",
     children = {
      {
-      text = "ui-cooldown-indicator.m2",
-      value = "ui-cooldown-indicator.m2",
+      text = "ui-cooldown-indicator.m2", -- @scan-ignore: midnight-safe
+      value = "ui-cooldown-indicator.m2", -- @scan-ignore: midnight-safe
       fileId = "131012",
      },
     },

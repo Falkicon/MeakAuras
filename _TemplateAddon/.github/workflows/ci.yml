@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luarocks
+          sudo luarocks install luacheck
+      
+      - name: Run Luacheck
+        run: |
+          luacheck . --config .luacheckrc --codes --no-color
+        continue-on-error: false
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check Formatting (StyLua)
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --check --config-path .stylua.toml .
+
+  toc-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate TOC
+        run: |
+          TOC_FILE=$(ls *.toc | head -1)
+          if [ -z "$TOC_FILE" ]; then
+            echo "No TOC file found"
+            exit 1
+          fi
+          
+          echo "Validating $TOC_FILE..."
+          
+          # Check interface version is current (120000 or 120001 for Midnight)
+          if ! grep -q "## Interface: 120001" "$TOC_FILE" && ! grep -q "## Interface: 120000" "$TOC_FILE"; then
+            echo "ERROR: Interface version must be 120001 or 120000 for Midnight compatibility"
+            exit 1
+          fi
+          
+          # Check all referenced files exist
+          grep -E "^[^#].*\.lua$" "$TOC_FILE" | while read -r file; do
+            file=$(echo "$file" | tr -d '\r' | xargs)
+            if [ ! -f "$file" ]; then
+              echo "ERROR: File referenced in TOC does not exist: $file"
+              exit 1
+            fi
+          done
+          
+          echo "TOC validation passed"
+

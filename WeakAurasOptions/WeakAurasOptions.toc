@@ -1,9 +1,9 @@
-## Interface: 110205
-## Title: WeakAuras Options
-## Author: The WeakAuras Team
+## Interface: 120001
+## Title: MeakAuras Options
+## Author: MeakAuras Team (fork of WeakAuras)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\WeakAuras\Media\Textures\icon.blp
-## Notes: Options for WeakAuras
+## Notes: Options for MeakAuras
 ## Notes-esES: Opciones para WeakAuras
 ## Notes-esMX: Opciones para WeakAuras
 ## Notes-deDE: Optionen für WeakAuras

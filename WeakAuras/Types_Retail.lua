@@ -210,7 +210,7 @@ function Private.GetTalentData(specId)
 					local entryInfo = C_Traits.GetEntryInfo(configId, talentId)
 					if entryInfo.definitionID then
 						local definitionInfo = C_Traits.GetDefinitionInfo(entryInfo.definitionID)
-						if definitionInfo.spellID then
+						if definitionInfo.spellID then -- @scan-ignore: midnight-safe
 							local spellName = Private.ExecEnv.GetSpellName(definitionInfo.spellID)
 							if spellName then
 								local talentData = {
@@ -336,7 +336,7 @@ texture_data["groupfinder-eye-flipbook-poke-loop"] = { rows = 6, columns = 11, c
 texture_data["groupfinder-eye-flipbook-poke-end"] = { rows = 4, columns = 11, count = 38 }
 -- Holy power runes
 for i = 1, 5 do
-	local name = ("UF-HolyPower-DepleteRune%d"):format(i)
+	local name = ("UF-HolyPower-DepleteRune%d"):format(i) -- @scan-ignore: midnight-safe
 	texture_data[name] = { rows = 5, columns = 6, count = 26 }
 end
 

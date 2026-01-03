@@ -1,6 +1,6 @@
-## Interface: 110205
-## Title: WeakAuras Archive
-## Author: The WeakAuras Team
+## Interface: 120001
+## Title: MeakAuras Archive
+## Author: MeakAuras Team (fork of WeakAuras)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\WeakAuras\Media\Textures\icon.blp
 ## LoadOnDemand: 1

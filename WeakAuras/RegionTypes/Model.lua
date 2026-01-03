@@ -9,7 +9,7 @@ local L = WeakAuras.L;
 
 -- Default settings
 local default = {
-  model_fileId = "122968", -- spells/arcanepower_state_chest.m2 & Creature/Arthaslichking/arthaslichking.m2
+  model_fileId = "122968", -- spells/arcanepower_state_chest.m2 & Creature/Arthaslichking/arthaslichking.m2 @scan-ignore: midnight-safe
   modelIsUnit = false,
   api = false, -- false ==> SetPosition + SetFacing; true ==> SetTransform
   model_x = 0,
@@ -358,3 +358,4 @@ end
 
 -- Register new region type with WeakAuras
 Private.RegisterRegionType("model", create, modify, default, GetProperties, validate);
+

@@ -226,7 +226,7 @@ local funcs = {
 
   --- @type fun(self: StopMotionBaseInstance)
   TimedUpdate = function(self)
-    local timeSinceStart = (GetTime() - self.startTime)
+    local timeSinceStart = (GetTime() - self.startTime) -- @scan-ignore: midnight-safe
     local newCurrentFrame = floor(timeSinceStart * (self.frameRate or 15))
     if (newCurrentFrame == self.currentFrame) then
       return
@@ -434,3 +434,4 @@ function Private.StopMotionBase.modify(stopMotion, options)
   end
   stopMotion.texture:SetBlendMode(options.blendMode)
 end
+

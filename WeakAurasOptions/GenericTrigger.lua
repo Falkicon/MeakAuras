@@ -480,6 +480,9 @@ local function GetGenericTriggerOptions(data, triggernum)
       width = WeakAuras.normalWidth,
       values = subtypes,
       sorting = OptionsPrivate.Private.SortOrderForValues(subtypes),
+      desc = function(info)
+        return OptionsPrivate.Private.GetMidnightTriggerTooltip and OptionsPrivate.Private.GetMidnightTriggerTooltip(trigger.event)
+      end,
       get = function(info)
         return trigger.event
       end,

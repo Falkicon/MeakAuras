@@ -1,0 +1,723 @@
+============================================================
+PATTERN SCAN: WeakAuras
+Scanned: 76 files
+Generated: 2025-12-22 03:58
+============================================================
+
+This scan finds OPERATIONS on secret value variables.
+Run scanner.py first to find the API calls themselves.
+
+[HIGH RISK] - Direct operations on tracked secret variables
+--------------------------------------------------
+  Animations.lua:34
+    Comparison with secret variable: region.duration
+    Code: if ((region.progressType == "timed" and region.duration < 0.01)...
+
+  Animations.lua:34
+    Comparison with secret variable: duration
+    Code: if ((region.progressType == "timed" and region.duration < 0.01)...
+
+  BossMods.lua:152
+    Arithmetic on secret variable: expirationTime
+    Code: and bar.expirationTime + extendTimer > GetTime()...
+
+  BossMods.lua:152
+    Arithmetic on secret variable: bar.expirationTime
+    Code: and bar.expirationTime + extendTimer > GetTime()...
+
+  BossMods.lua:632
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.BossMods.DBM:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:632
+    Arithmetic on secret variable: bar.expirationTime
+    Code: Private.ExecEnv.BossMods.DBM:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:640
+    Arithmetic on secret variable: expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BossMods.lua:640
+    Arithmetic on secret variable: bar.expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BossMods.lua:865
+    Arithmetic on secret variable: expirationTime
+    Code: and bar.expirationTime + extendTimer > GetTime()...
+
+  BossMods.lua:865
+    Arithmetic on secret variable: bar.expirationTime
+    Code: and bar.expirationTime + extendTimer > GetTime()...
+
+  BossMods.lua:1341
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.BossMods.BigWigs:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:1341
+    Arithmetic on secret variable: bar.expirationTime
+    Code: Private.ExecEnv.BossMods.BigWigs:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:1349
+    Arithmetic on secret variable: expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BossMods.lua:1349
+    Arithmetic on secret variable: bar.expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BossMods.lua:1777
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.BossMods.Generic:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:1777
+    Arithmetic on secret variable: bar.expirationTime
+    Code: Private.ExecEnv.BossMods.Generic:ScheduleCheck(bar.expirationTime + extendTimer)...
+
+  BossMods.lua:1785
+    Arithmetic on secret variable: expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BossMods.lua:1785
+    Arithmetic on secret variable: bar.expirationTime
+    Code: or (state and state.show and state.expirationTime > (bar.expirationTime + extend...
+
+  BuffTrigger2.lua:618
+    Arithmetic on secret variable: modRate
+    Code: return auraDataExpirationTime - triggerInfoRemaining * modRate...
+
+  BuffTrigger2.lua:620
+    Arithmetic on secret variable: modRate
+    Code: return min(auraDataExpirationTime - triggerInfoRemaining * modRate, nextCheck)...
+
+  BuffTrigger2.lua:871
+    Arithmetic on secret variable: bestMatch.expirationTime
+    Code: if state.expirationTime and bestMatch.expirationTime and bestMatch.expirationTim...
+
+  BuffTrigger2.lua:871
+    Arithmetic on secret variable: state.expirationTime
+    Code: if state.expirationTime and bestMatch.expirationTime and bestMatch.expirationTim...
+
+  BuffTrigger2.lua:871
+    Comparison with secret variable: state.expirationTime
+    Code: if state.expirationTime and bestMatch.expirationTime and bestMatch.expirationTim...
+
+  BuffTrigger2.lua:871
+    Arithmetic on secret variable: expirationTime
+    Code: if state.expirationTime and bestMatch.expirationTime and bestMatch.expirationTim...
+
+  BuffTrigger2.lua:871
+    Comparison with secret variable: expirationTime
+    Code: if state.expirationTime and bestMatch.expirationTime and bestMatch.expirationTim...
+
+  BuffTrigger2.lua:1000
+    Comparison with secret variable: duration
+    Code: duration = 0,...
+
+  BuffTrigger2.lua:1002
+    Comparison with secret variable: modRate
+    Code: modRate = 1,...
+
+  BuffTrigger2.lua:1076
+    Comparison with secret variable: modRate
+    Code: state.modRate = 1...
+
+  BuffTrigger2.lua:1076
+    Comparison with secret variable: state.modRate
+    Code: state.modRate = 1...
+
+  BuffTrigger2.lua:2846
+    Arithmetic on secret variable: matchData.duration
+    Code: if not(matchData.duration / matchData.modRate %s %s) then...
+
+  BuffTrigger2.lua:2846
+    Arithmetic on secret variable: modRate
+    Code: if not(matchData.duration / matchData.modRate %s %s) then...
+
+  BuffTrigger2.lua:2846
+    Arithmetic on secret variable: matchData.modRate
+    Code: if not(matchData.duration / matchData.modRate %s %s) then...
+
+  BuffTrigger2.lua:2846
+    Arithmetic on secret variable: duration
+    Code: if not(matchData.duration / matchData.modRate %s %s) then...
+
+  BuffTrigger2.lua:3222
+    tonumber on secret variable: spellId
+    Code: local spellId = tonumber(spellIdString)...
+
+  BuffTrigger2.lua:3369
+    tonumber on secret variable: spellId
+    Code: local spellId = spellIdString ~= "" and tonumber(spellIdString)...
+
+  BuffTrigger2.lua:3694
+    Comparison with secret variable: state.duration
+    Code: state.duration = 0...
+
+  BuffTrigger2.lua:3694
+    Comparison with secret variable: duration
+    Code: state.duration = 0...
+
+  BuffTrigger2.lua:3696
+    Comparison with secret variable: modRate
+    Code: state.modRate = 1...
+
+  BuffTrigger2.lua:3696
+    Comparison with secret variable: state.modRate
+    Code: state.modRate = 1...
+
+  BuffTrigger2.lua:3972
+    Comparison with secret variable: duration
+    Code: duration = 0,...
+
+  BuffTrigger2.lua:3974
+    Comparison with secret variable: modRate
+    Code: modRate = 1,...
+
+  BuffTrigger2.lua:4005
+    Comparison with secret variable: duration
+    Code: duration = 0...
+
+  BuffTrigger2.lua:4048
+    Arithmetic on secret variable: expirationTime
+    Code: ScheduleMultiCleanUp(matchData.GUID, expirationTime / (modRate or 1))...
+
+  BuffTrigger2.lua:4427
+    Comparison with secret variable: state.duration
+    Code: state.duration = 65...
+
+  BuffTrigger2.lua:4427
+    Comparison with secret variable: duration
+    Code: state.duration = 65...
+
+  BuffTrigger2.lua:4436
+    Comparison with secret variable: state.duration
+    Code: state.duration = 100...
+
+  BuffTrigger2.lua:4436
+    Comparison with secret variable: duration
+    Code: state.duration = 100...
+
+  GenericTrigger.lua:548
+    Arithmetic on secret variable: data.duration
+    Code: local expirationTime = GetTime() + data.duration;...
+
+  GenericTrigger.lua:1131
+    Comparison with secret variable: state.duration
+    Code: state.duration = 7...
+
+  GenericTrigger.lua:1131
+    Comparison with secret variable: duration
+    Code: state.duration = 7...
+
+  GenericTrigger.lua:1728
+    tonumber on secret variable: trigger.duration
+    Code: duration = tonumber(trigger.duration or "1")...
+
+  GenericTrigger.lua:1894
+    tonumber on secret variable: trigger.duration
+    Code: duration = tonumber(trigger.duration);...
+
+  GenericTrigger.lua:2296
+    Comparison with secret variable: duration
+    Code: runeDuration = duration > 0 and duration or runeDuration...
+
+  GenericTrigger.lua:2358
+    Comparison with secret variable: expirationTime
+    Code: if (not self.expirationTime[id] or expirationTime < self.expirationTime[id]) and...
+
+  GenericTrigger.lua:2379
+    Arithmetic on secret variable: self.duration
+    Code: return self.expirationTime[id] - self.duration[id], self.duration[id], false, se...
+
+  GenericTrigger.lua:2399
+    Comparison with secret variable: startTime
+    Code: startTime = 0...
+
+  GenericTrigger.lua:2400
+    Comparison with secret variable: duration
+    Code: duration = 0...
+
+  GenericTrigger.lua:2821
+    Arithmetic on secret variable: startTime
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:2821
+    Arithmetic on secret variable: duration
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:2986
+    Comparison with secret variable: duration
+    Code: local duration = 1 / peace...
+
+  GenericTrigger.lua:2999
+    Arithmetic on secret variable: duration
+    Code: local estimatedPartial = (now - lastFullValue) / duration...
+
+  GenericTrigger.lua:3017
+    Arithmetic on secret variable: power
+    Code: elseif power + 1 == i then...
+
+  GenericTrigger.lua:3019
+    Arithmetic on secret variable: duration
+    Code: essence.expirationTime = GetTime() + (1 - partial) * duration...
+
+  GenericTrigger.lua:3023
+    Arithmetic on secret variable: power
+    Code: essence.expirationTime = GetTime() + (1 - partial) * duration + (i - 1 - power) ...
+
+  GenericTrigger.lua:3023
+    Arithmetic on secret variable: duration
+    Code: essence.expirationTime = GetTime() + (1 - partial) * duration + (i - 1 - power) ...
+
+  GenericTrigger.lua:3059
+    Arithmetic on secret variable: cache.duration
+    Code: return total * cache.duration, cache.expirationTime, cache.remaining, cache.paus...
+
+  GenericTrigger.lua:3059
+    Arithmetic on secret variable: total
+    Code: return total * cache.duration, cache.expirationTime, cache.remaining, cache.paus...
+
+  GenericTrigger.lua:3117
+    Arithmetic on secret variable: startTime
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:3117
+    Arithmetic on secret variable: duration
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:3167
+    Arithmetic on secret variable: startTime
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:3167
+    Arithmetic on secret variable: duration
+    Code: if ((gcdStart or 0) + (gcdDuration or 0) > startTime + duration) then...
+
+  GenericTrigger.lua:3209
+    Comparison with secret variable: duration
+    Code: runeDuration = duration > 0 and duration or runeDuration...
+
+  GenericTrigger.lua:3212
+    Comparison with secret variable: startTime
+    Code: if(not startTime or startTime == 0) then...
+
+  GenericTrigger.lua:3213
+    Comparison with secret variable: startTime
+    Code: startTime = 0...
+
+  GenericTrigger.lua:3214
+    Comparison with secret variable: duration
+    Code: duration = 0...
+
+  GenericTrigger.lua:3217
+    Comparison with secret variable: duration
+    Code: if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then...
+
+  GenericTrigger.lua:3237
+    Comparison with secret variable: duration
+    Code: elseif(duration > 0) then...
+
+  GenericTrigger.lua:3336
+    Comparison with secret variable: duration
+    Code: startTime, duration = 0, 0;...
+
+  GenericTrigger.lua:3345
+    Comparison with secret variable: duration
+    Code: if duration and duration <= 1.5 or (duration == gcdDuration and startTime == gcd...
+
+  GenericTrigger.lua:3374
+    Comparison with secret variable: duration
+    Code: if (duration == 0) then...
+
+  GenericTrigger.lua:3378
+    Comparison with secret variable: duration
+    Code: startTime, duration = 0, 0...
+
+  GenericTrigger.lua:3389
+    Comparison with secret variable: duration
+    Code: if(duration > 0 and duration > 1.5 and duration ~= WeakAuras.gcdDuration()) then...
+
+  GenericTrigger.lua:3415
+    Comparison with secret variable: duration
+    Code: elseif(duration > 0) then...
+
+  GenericTrigger.lua:3445
+    Comparison with secret variable: duration
+    Code: if(duration > 0 and duration > 1.5 and duration ~= WeakAuras.gcdDuration()) then...
+
+  GenericTrigger.lua:3469
+    Comparison with secret variable: duration
+    Code: elseif(duration > 0) then...
+
+  GenericTrigger.lua:3526
+    Comparison with secret variable: startTime
+    Code: if(not startTime or startTime == 0) then...
+
+  GenericTrigger.lua:3527
+    Comparison with secret variable: startTime
+    Code: startTime = 0...
+
+  GenericTrigger.lua:3528
+    Comparison with secret variable: duration
+    Code: duration = 0...
+
+  GenericTrigger.lua:3531
+    Comparison with secret variable: duration
+    Code: if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then...
+
+  GenericTrigger.lua:3591
+    Comparison with secret variable: duration
+    Code: if (duration == 0) then...
+
+  GenericTrigger.lua:3595
+    Comparison with secret variable: duration
+    Code: startTime, duration = 0, 0...
+
+  GenericTrigger.lua:3598
+    Comparison with secret variable: duration
+    Code: if(duration and duration > 0 and duration > 1.5 and duration ~= WeakAuras.gcdDur...
+
+  GenericTrigger.lua:3622
+    Comparison with secret variable: duration
+    Code: if(duration > 0 and duration > 1.5 and duration ~= WeakAuras.gcdDuration()) then...
+
+  GenericTrigger.lua:5134
+    Comparison with secret variable: state.duration
+    Code: state.duration = 0;...
+
+  GenericTrigger.lua:5134
+    Comparison with secret variable: duration
+    Code: state.duration = 0;...
+
+  GenericTrigger.lua:5170
+    Comparison with secret variable: state.duration
+    Code: state.duration = 0;...
+
+  GenericTrigger.lua:5170
+    Comparison with secret variable: duration
+    Code: state.duration = 0;...
+
+  Prototypes.lua:3820
+    Arithmetic on secret variable: shardModifier
+    Code: local power = UnitPower(unit, powerType, true) / shardModifier...
+
+  Prototypes.lua:3821
+    Arithmetic on secret variable: shardModifier
+    Code: local total = math.max(1, UnitPowerMax(unit, powerType, true)) / shardModifier...
+
+  Prototypes.lua:3861
+    Arithmetic on secret variable: displayMod
+    Code: local power = UnitPower(unit, powerType, true) / displayMod...
+
+  Prototypes.lua:3862
+    Arithmetic on secret variable: displayMod
+    Code: local total = math.max(1, UnitPowerMax(unit, powerType, true)) / displayMod...
+
+  Prototypes.lua:4035
+    Arithmetic on secret variable: total
+    Code: init = "total ~= 0 and (value / total) * 100 or nil",...
+
+  Prototypes.lua:4035
+    Comparison with secret variable: total
+    Code: init = "total ~= 0 and (value / total) * 100 or nil",...
+
+  Prototypes.lua:4048
+    Arithmetic on secret variable: total
+    Code: init = "total - value",...
+
+  Prototypes.lua:5457
+    Comparison with secret variable: expirationTime
+    Code: if (state.expirationTime ~= 0) then...
+
+  Prototypes.lua:5457
+    Comparison with secret variable: state.expirationTime
+    Code: if (state.expirationTime ~= 0) then...
+
+  Prototypes.lua:5458
+    Comparison with secret variable: expirationTime
+    Code: state.expirationTime = 0;...
+
+  Prototypes.lua:5458
+    Comparison with secret variable: state.expirationTime
+    Code: state.expirationTime = 0;...
+
+  Prototypes.lua:5461
+    Comparison with secret variable: state.duration
+    Code: if (state.duration ~= 0) then...
+
+  Prototypes.lua:5461
+    Comparison with secret variable: duration
+    Code: if (state.duration ~= 0) then...
+
+  Prototypes.lua:5462
+    Comparison with secret variable: state.duration
+    Code: state.duration = 0;...
+
+  Prototypes.lua:5462
+    Comparison with secret variable: duration
+    Code: state.duration = 0;...
+
+  Prototypes.lua:5494
+    Comparison with secret variable: expirationTime
+    Code: if (not paused and expirationTime and expirationTime > 0) then...
+
+  Prototypes.lua:5500
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck * (modRate or 1), e...
+
+  Prototypes.lua:6021
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck, event);...
+
+  Prototypes.lua:6224
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck, event);...
+
+  Prototypes.lua:6619
+    Comparison with secret variable: duration
+    Code: test = "(inverse and duration == 0) or (not inverse and duration > 0 and hasSpel...
+
+  Prototypes.lua:6647
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - triggerRemaining, "SWING_TIMER_UPD...
+
+  Prototypes.lua:6727
+    Comparison with secret variable: duration
+    Code: test = "(inverse and duration == 0) or (not inverse and duration > 0)"...
+
+  Prototypes.lua:6802
+    Comparison with secret variable: duration
+    Code: charges = (duration == 0 or gcdCooldown) and 1 or 0;...
+
+  Prototypes.lua:7589
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck);...
+
+  Prototypes.lua:7644
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck);...
+
+  Prototypes.lua:7871
+    Comparison with secret variable: init
+    Code: init = 0,...
+
+  Prototypes.lua:8063
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - triggerRemaining, "TENCH_UPDATE");...
+
+  Prototypes.lua:8754
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleScan(expirationTime - remainingCheck);...
+
+  Prototypes.lua:8869
+    Arithmetic on secret variable: duration
+    Code: return duration, startTime + duration...
+
+  Prototypes.lua:9778
+    Arithmetic on secret variable: startTime
+    Code: if startTime / 1000 + lastFinish <= GetTime() then...
+
+  Prototypes.lua:9781
+    Arithmetic on secret variable: startTime
+    Code: if Round(startTime/1000) == Round(GetTime()) then...
+
+  Prototypes.lua:9782
+    Arithmetic on secret variable: startTime
+    Code: Private.ExecEnv.ScheduleCastCheck(startTime / 1000 + lastFinish, unit)...
+
+  Prototypes.lua:9796
+    Arithmetic on secret variable: expirationTime
+    Code: Private.ExecEnv.ScheduleCastCheck(expirationTime - remainingCheck, unit)...
+
+  Prototypes.lua:10278
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[1].start, state.duration - state.stages...
+
+  Prototypes.lua:10278
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[1].start, state.duration - state.stages...
+
+  Prototypes.lua:10286
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[2].start, state.duration - state.stages...
+
+  Prototypes.lua:10286
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[2].start, state.duration - state.stages...
+
+  Prototypes.lua:10294
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[3].start, state.duration - state.stages...
+
+  Prototypes.lua:10294
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[3].start, state.duration - state.stages...
+
+  Prototypes.lua:10302
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[4].start, state.duration - state.stages...
+
+  Prototypes.lua:10302
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[4].start, state.duration - state.stages...
+
+  Prototypes.lua:10310
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[5].start, state.duration - state.stages...
+
+  Prototypes.lua:10310
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[5].start, state.duration - state.stages...
+
+  Prototypes.lua:10322
+    Arithmetic on secret variable: state.duration
+    Code: return state.duration - state.stagesData[state.stageTotal].finish, 0...
+
+  Prototypes.lua:10322
+    Arithmetic on secret variable: duration
+    Code: return state.duration - state.stagesData[state.stageTotal].finish, 0...
+
+  Prototypes.lua:12495
+    Arithmetic on secret variable: duration
+    Code: duration = duration % 60;...
+
+  Prototypes.lua:12496
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%02i", duration);...
+
+  Prototypes.lua:12499
+    Comparison with secret variable: duration
+    Code: if totalPrecision == 4 and duration <= 3 then...
+
+  Prototypes.lua:12500
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%.1f", duration);...
+
+  Prototypes.lua:12501
+    Comparison with secret variable: duration
+    Code: elseif totalPrecision == 5 and duration <= 3 then...
+
+  Prototypes.lua:12502
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%.2f", duration);...
+
+  Prototypes.lua:12503
+    Comparison with secret variable: duration
+    Code: elseif totalPrecision == 6 and duration <= 3 then...
+
+  Prototypes.lua:12504
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%.3f", duration);...
+
+  Prototypes.lua:12505
+    Comparison with secret variable: duration
+    Code: elseif (totalPrecision == 4 or totalPrecision == 5 or totalPrecision == 6) and d...
+
+  Prototypes.lua:12506
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%d", duration);...
+
+  Prototypes.lua:12508
+    String formatting with secret variable: duration
+    Code: durationStr = durationStr..string.format("%."..totalPrecision.."f", duration);...
+
+  WeakAuras.lua:4199
+    Comparison with secret variable: state.duration
+    Code: state.duration = 0;...
+
+  WeakAuras.lua:4199
+    Comparison with secret variable: duration
+    Code: state.duration = 0;...
+
+  WeakAuras.lua:4686
+    Comparison with secret variable: duration
+    Code: and duration and type(duration) == "number" and duration > 0...
+
+  WeakAuras.lua:4798
+    Arithmetic on secret variable: state.duration
+    Code: state.expirationTime = GetTime() + state.duration...
+
+  WeakAuras.lua:4829
+    Arithmetic on secret variable: expirationTime
+    Code: expirationTime - GetTime());...
+
+  WeakAuras.lua:5632
+    Arithmetic on secret variable: moverFrame.startTime
+    Code: local angle = ((GetTime() - moverFrame.startTime) % 5) / 5 * 360;...
+
+  BaseRegions\StopMotion.lua:229
+    Arithmetic on secret variable: self.startTime
+    Code: local timeSinceStart = (GetTime() - self.startTime)...
+
+  RegionTypes\AuraBar.lua:782
+    Arithmetic on secret variable: duration
+    Code: local progress = duration ~= 0 and remaining / duration or 0;...
+
+  RegionTypes\AuraBar.lua:782
+    Comparison with secret variable: duration
+    Code: local progress = duration ~= 0 and remaining / duration or 0;...
+
+  RegionTypes\AuraBar.lua:940
+    Comparison with secret variable: duration
+    Code: local progress = self.duration ~= 0 and remaining / self.duration or 0;...
+
+  RegionTypes\AuraBar.lua:940
+    Arithmetic on secret variable: self.duration
+    Code: local progress = self.duration ~= 0 and remaining / self.duration or 0;...
+
+  RegionTypes\AuraBar.lua:940
+    Comparison with secret variable: self.duration
+    Code: local progress = self.duration ~= 0 and remaining / self.duration or 0;...
+
+  RegionTypes\Icon.lua:641
+    Comparison with secret variable: cooldown.duration
+    Code: if (cooldown.duration and cooldown.duration > 0.01 and cooldown.duration ~= math...
+
+  RegionTypes\Icon.lua:641
+    Comparison with secret variable: duration
+    Code: if (cooldown.duration and cooldown.duration > 0.01 and cooldown.duration ~= math...
+
+  RegionTypes\ProgressTexture.lua:424
+    Comparison with secret variable: duration
+    Code: if (duration ~= 0) then...
+
+  RegionTypes\RegionPrototype.lua:414
+    Comparison with secret variable: duration
+    Code: self.duration = 0...
+
+  RegionTypes\RegionPrototype.lua:414
+    Comparison with secret variable: self.duration
+    Code: self.duration = 0...
+
+  RegionTypes\RegionPrototype.lua:482
+    Comparison with secret variable: duration
+    Code: duration = 0...
+
+  RegionTypes\RegionPrototype.lua:575
+    Comparison with secret variable: self.duration
+    Code: self.duration = 0...
+
+  RegionTypes\RegionPrototype.lua:575
+    Comparison with secret variable: duration
+    Code: self.duration = 0...
+
+  RegionTypes\RegionPrototype.lua:941
+    Comparison with secret variable: duration
+    Code: self.duration = (duration ~= 0 and self.adjustedMax or duration) - adjustMin...
+
+
+[MEDIUM RISK] - Heuristic matches (review manually)
+--------------------------------------------------
+  508 potential issues found
+  (Run with --verbose to see all)
+
+============================================================
+SUMMARY
+============================================================
+  High Risk:   174
+  Medium Risk: 508
+
+FIX STRATEGIES:
+  - Passthrough: Pass values directly to StatusBar/Cooldown widgets
+  - Check first: Use issecretvalue() before operations
+  - Degrade: Show '...' when values are secret

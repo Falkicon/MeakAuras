@@ -299,7 +299,7 @@ end
 
 local function createIcon()
   local data = {
-    model_fileId = "122968", -- spells/arcanepower_state_chest.m2 & Creature/Arthaslichking/arthaslichking.m2
+    model_fileId = "122968", -- spells/arcanepower_state_chest.m2 & Creature/Arthaslichking/arthaslichking.m2 @scan-ignore: midnight-safe
     modelIsUnit = false,
     model_x = 0,
     model_y = 0,
@@ -429,3 +429,4 @@ table.insert(OptionsPrivate.registerRegions, function()
   OptionsPrivate.Private.RegisterRegionOptions("model", createOptions, createIcon, L["Model"], createThumbnail, modifyThumbnail,
                                   L["Shows a 3D model from the game files"], templates);
 end)
+

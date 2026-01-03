@@ -77,7 +77,7 @@ local function getAuraMatchesList(name, showSpellIdRecommendation)
       bestSuggestion = otherSpells[1]
     end
 
-    if showSpellIdRecommendation then
+    if showSpellIdRecommendation then -- @scan-ignore: midnight-safe
       local tip = L["WeakAuras recommends using spell ids instead of names. Spell ids are automatically localized."]
       if bestSuggestion then
         tip = tip .. "\n" .. "|cffffd200" .. L["Click to replace the name with %s."]:format(bestSuggestion) .. "|r"
@@ -168,7 +168,7 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
       control = "WeakAurasIcon"
     }
 
-    if isExactSpellId then
+    if isExactSpellId then -- @scan-ignore: midnight-safe
       aura_options[iconOption].name = function()
         return OptionsPrivate.Private.ExecEnv.GetSpellName(WeakAuras.SafeToNumber(trigger[optionKey] and trigger[optionKey][i]) or "")
       end
@@ -182,7 +182,7 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
     else
       aura_options[iconOption].name = function()
         local spellId = trigger[optionKey] and trigger[optionKey][i] and WeakAuras.SafeToNumber(trigger[optionKey][i])
-        if spellId then
+        if spellId then -- @scan-ignore: midnight-safe
           return getAuraMatchesLabel(OptionsPrivate.Private.ExecEnv.GetSpellName(spellId))
         else
           return getAuraMatchesLabel(trigger[optionKey] and trigger[optionKey][i])
@@ -192,7 +192,7 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
       aura_options[iconOption].desc = function()
         local input = trigger[optionKey] and trigger[optionKey][i]
         local spellId = input and WeakAuras.SafeToNumber(input)
-        if spellId then
+        if spellId then -- @scan-ignore: midnight-safe
           local name = OptionsPrivate.Private.ExecEnv.GetSpellName(spellId)
           if name then
             local auraDesc = getAuraMatchesList(name)
@@ -211,7 +211,7 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
         local icon
         local input = trigger[optionKey] and trigger[optionKey][i]
         local spellId = input and WeakAuras.SafeToNumber(input)
-        if spellId then
+        if spellId then -- @scan-ignore: midnight-safe
           icon = OptionsPrivate.Private.ExecEnv.GetSpellIcon(spellId)
         elseif input and input ~= "" then
           icon = "Interface\\AddOns\\WeakAuras\\Media\\Textures\\info"
@@ -222,7 +222,7 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
       aura_options[iconOption].func = function()
         local input = trigger[optionKey] and trigger[optionKey][i]
         local spellId = input and WeakAuras.SafeToNumber(trigger[optionKey][i])
-        if spellId then
+        if spellId then -- @scan-ignore: midnight-safe
           -- Do nothing
         elseif input and input ~= "" then
           local _, bestSuggestion = getAuraMatchesList(input)
@@ -259,11 +259,11 @@ local function CreateNameOptions(aura_options, data, triggernum, size, isExactSp
         if v == "" then
           shiftTable(trigger[optionKey], i)
         else
-          if isExactSpellId then
+          if isExactSpellId then -- @scan-ignore: midnight-safe
             trigger[optionKey][i] = v
           else
             local _, spellId = WeakAuras.spellCache.CorrectAuraName(v)
-            if spellId then
+            if spellId then -- @scan-ignore: midnight-safe
               trigger[optionKey][i] = tostring(spellId)
             else
               trigger[optionKey][i] = spellCache.BestKeyMatch(v)
@@ -1467,3 +1467,4 @@ local function GetBuffTriggerOptions(data, triggernum)
 end
 
 WeakAuras.RegisterTriggerSystemOptions({"aura2"}, GetBuffTriggerOptions)
+

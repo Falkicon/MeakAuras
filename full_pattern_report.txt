@@ -1,0 +1,31 @@
+============================================================
+PATTERN SCAN: WeakAuras
+Scanned: 198 files
+Generated: 2025-12-22 13:08
+============================================================
+
+This scan finds OPERATIONS on secret value variables.
+Run scanner.py first to find the API calls themselves.
+
+[HIGH RISK] - Direct operations on tracked secret variables
+--------------------------------------------------
+  WeakAurasOptions\GenericTrigger.lua:408
+    Arithmetic on secret variable: duration
+    Code: OptionsPrivate.commonOptions.AddCodeOption(customOptions, data, L["Duration Info...
+
+
+[MEDIUM RISK] - Heuristic matches (review manually)
+--------------------------------------------------
+  101 potential issues found
+  (Run with --verbose to see all)
+
+============================================================
+SUMMARY
+============================================================
+  High Risk:   1
+  Medium Risk: 101
+
+FIX STRATEGIES:
+  - Passthrough: Pass values directly to StatusBar/Cooldown widgets
+  - Check first: Use issecretvalue() before operations
+  - Degrade: Show '...' when values are secret

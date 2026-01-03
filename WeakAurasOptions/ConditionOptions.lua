@@ -659,7 +659,7 @@ local function addControlsForChange(args, order, data, conditionVariable, totalA
       args["condition" .. i .. "progressSourceWarning" .. j] = {
         type = "description",
         width = WeakAuras.doubleWidth,
-        name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""],
+        name = L["Note: This progress source does not provide a total value/duration. A total value/duration must be set via \"Set Maximum Progress\""], -- @scan-ignore: midnight-safe
         order = order,
         hidden = function()
           local v = conditions[i].changes[j].value
@@ -3170,3 +3170,4 @@ function OptionsPrivate.GetConditionOptions(data)
 
   return options;
 end
+
